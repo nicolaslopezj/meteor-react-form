@@ -6,7 +6,7 @@ Package.describe({
   summary: '',
 
   // URL to the Git repository containing the source code for this package.
-  git: '',
+  git: 'https://github.com/nicolaslopezj/meteor-react-form',
 
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.

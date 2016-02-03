@@ -20,6 +20,37 @@ meteor add nicolaslopezj:mrf-material-ui
 
 ## Example
 
+Schema
+
+```js
+Posts = new Meteor.Collection('posts');
+
+Posts.attachSchema({
+  title: {
+    type: String,
+  },
+  body: MRF.Attribute.Textarea({
+    label: 'Content',
+  }),
+  createdAt: {
+    type: Date,
+    index: 1,
+    mrfOptions: {
+      omit: true,
+    },
+    autoValue: function() {
+      if (this.isInsert) {
+        return new Date();
+      } else if (this.isUpsert) {
+        return { $setOnInsert: new Date() };
+      } else {
+        this.unset();
+      }
+    },
+  },
+});
+```
+
 An insert form.
 
 ```jsx
