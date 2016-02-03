@@ -1,11 +1,32 @@
+const propTypes = {
+  /**
+   * The document that has the original values for the form.
+   */
+  doc: React.PropTypes.object,
+
+  /**
+   * The Mongo Collection for the form.
+   */
+  collection: React.PropTypes.object,
+
+  /**
+   * The type of the form. insert or update.
+   */
+  type: React.PropTypes.string.isRequired,
+
+  /**
+   * A function that is called when the form action finished with success.
+   */
+  onSuccess: React.PropTypes.func,
+
+  /**
+   * Render automatically the components inside the form.
+   */
+  autoRender: React.PropTypes.bool,
+};
+
 MRF.Form = React.createClass({
-  propTypes: {
-    doc: React.PropTypes.object,
-    collection: React.PropTypes.object,
-    type: React.PropTypes.string.isRequired,
-    onSuccess: React.PropTypes.func,
-    autoRender: React.PropTypes.bool,
-  },
+  propTypes: propTypes,
 
   getInitialState() {
     return {
@@ -16,6 +37,7 @@ MRF.Form = React.createClass({
   },
 
   onCommit(error, docId) {
+    this.setState({ errorMessages: {} });
     if (error) {
       this.handleError(error);
     } else {
@@ -36,6 +58,7 @@ MRF.Form = React.createClass({
   },
 
   handleError(error) {
+    console.log(error);
     var context = this.props.collection.simpleSchema().namedContext(`mrf${this.props.type}`);
     var invalidKeys = context.invalidKeys();
     var errorMessages = {};
@@ -65,6 +88,12 @@ MRF.Form = React.createClass({
 
   generateInputsForKeys(keys, parent = '') {
     var schema = this.props.collection.simpleSchema();
+    keys = _.reject(keys, (key) => {
+      var fullKey = parent ? `${parent}.${key}` : key;
+      var keySchema = schema._schema[fullKey];
+      var options = keySchema.mrfOptions;
+      if (options && options.omit) return true;
+    });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];

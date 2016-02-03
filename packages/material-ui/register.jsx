@@ -7,6 +7,14 @@ MRF.registerAttribute({
 });
 
 MRF.registerAttribute({
+  type: 'Textarea',
+  component: MRF.Components.Textarea,
+  schema: {
+    type: String,
+  },
+});
+
+MRF.registerAttribute({
   type: 'Number',
   component: MRF.Components.Number,
   schema: {
@@ -36,6 +44,16 @@ MRF.registerAttribute({
   schema: function(options) {
     return {
       type: [String],
+      mrfOptions: options,
+    };
+  },
+});
+
+MRF.registerAttribute({
+  type: 'SelectWithMethod',
+  component: MRF.Components.SelectWithMethod,
+  schema: function(options) {
+    return {
       mrfOptions: options,
     };
   },

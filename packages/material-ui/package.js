@@ -33,9 +33,11 @@ Package.onUse(function(api) {
     'components/array.jsx',
     'components/object.jsx',
     'components/string.jsx',
+    'components/textarea.jsx',
     'components/number.jsx',
     'components/date.jsx',
     'components/multiple-checkbox.jsx',
+    'components/select-with-method.jsx',
     'register.jsx',
   ], 'client');
 
