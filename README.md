@@ -2,6 +2,9 @@
 
 Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/simple-schema) and React.
 
+MRF is an attempt to make something like AutoForm but for react,
+with the priority of making it extendable and easy to use.
+
 This is on development stage, don't use in production.
 
 ## How to use
