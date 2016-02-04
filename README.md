@@ -21,7 +21,7 @@ Install a set of fields. *only material-ui right now*.
 meteor add nicolaslopezj:mrf-material-ui
 ```
 
-## Example
+## Basic Example
 
 Schema
 
@@ -97,3 +97,69 @@ PostsUpdate = React.createClass({
   },
 });
 ```
+
+## Create Components
+
+MRF is built from the idea that you can create custom components easily.
+
+First, you have to register the attribute:
+
+```js
+MRF.registerAttribute(options);
+```
+
+**Options:**
+
+- **type**: *String*. The name of the attribute.
+- **component**: *React Component*. The component of the field.
+- **schema**: *String* or *Function*. The schema of the field, for example, ```{ type: String }```.
+
+And the component must have the following propTypes:
+
+- **value**: *Any* Optional. The value of the field.
+- **label**: *String*. The label for the field.
+- **errorMessage**: *String* Optional. If there is a error, this will be the message.
+- **onChange**: *Function*. Call this function when the value changes. If the value change, the prop ```value``` will change too.
+
+#### Example:
+
+```js
+var TextareaComponent = React.createClass({
+  propTypes: {
+    value: React.PropTypes.string,
+    label: React.PropTypes.string.isRequired,
+    errorMessage: React.PropTypes.string,
+    onChange: React.PropTypes.func.isRequired,
+  },
+
+  render: function() {
+    return (
+      <TextField
+        ref="input"
+        fullWidth={true}
+        multiLine={true}
+        rows={2}
+        value={this.props.value}
+        floatingLabelText={this.props.label}
+        errorText={this.props.errorMessage}
+        onChange={(event) => this.props.onChange(event.target.value)} />
+    );
+  },
+});
+
+MRF.registerAttribute({
+  type: 'Textarea',
+  component: TextareaComponent,
+  schema: {
+    type: String,
+  },
+});
+```
+
+## To Do
+
+- [x] Api to create custom components.
+- [ ] Make a better documentation.
+- [ ] Create more callbacks.
+- [ ] Add more form type, like *method*.
+- [ ] Create components for other UI library.
