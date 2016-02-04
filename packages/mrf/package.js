@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nicolaslopezj:mrf',
   version: '0.0.1',
-  summary: 'Automatic forms creation with SimpleSchema and React',
+  summary: 'Automatic forms creation with Simple Schema and React',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
 });
@@ -12,9 +12,9 @@ Package.onUse(function(api) {
     'ecmascript',
     'underscore',
     'check',
-    'react',
-    'aldeed:simple-schema',
-    'aldeed:collection2',
+    'react@0.14.3',
+    'aldeed:simple-schema@1.5.3',
+    'aldeed:collection2@2.8.0',
   ]);
 
   api.imply([
@@ -38,6 +38,4 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('nicolaslopezj:react-form');
-  api.addFiles('react-form-tests.js');
 });

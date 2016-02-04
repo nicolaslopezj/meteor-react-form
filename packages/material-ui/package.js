@@ -1,15 +1,8 @@
 Package.describe({
   name: 'nicolaslopezj:mrf-material-ui',
   version: '0.0.1',
-
-  // Brief, one-line summary of the package.
-  summary: '',
-
-  // URL to the Git repository containing the source code for this package.
+  summary: 'Automatic forms creation with Simple Schema and React for Material-UI',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
-
-  // By default, Meteor will default to using README.md for documentation.
-  // To avoid submitting documentation, set this field to null.
   documentation: 'README.md',
 });
 
@@ -19,9 +12,9 @@ Package.onUse(function(api) {
     'ecmascript',
     'underscore',
     'check',
-    'react',
-    'izzilab:material-ui',
-    'nicolaslopezj:mrf',
+    'react@0.14.3',
+    'izzilab:material-ui@0.2.6',
+    'nicolaslopezj:mrf@0.0.1',
   ]);
 
   api.imply([
@@ -47,6 +40,4 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('nicolaslopezj:react-form');
-  api.addFiles('react-form-tests.js');
 });
