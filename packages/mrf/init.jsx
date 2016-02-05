@@ -7,5 +7,5 @@ MRF.Types = {};
 
 SimpleSchema.extendOptions({
   mrf: Match.Optional(Object),
-  mrfOptions: Match.Optional(Object),
+  mrfType: Match.Optional(String),
 });

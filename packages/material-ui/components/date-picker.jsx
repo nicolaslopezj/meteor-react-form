@@ -1,27 +1,25 @@
 var {
-  TextField,
+  DatePicker,
 } = MUI;
 
-class TextareaComponent extends MRF.FieldType {
+class DatePickerComponent extends MRF.FieldType {
   render() {
     return (
-      <TextField
+      <DatePicker
         ref="input"
         fullWidth={true}
-        multiLine={true}
-        rows={2}
         value={this.props.value}
         floatingLabelText={this.props.label}
         errorText={this.props.errorMessage}
-        onChange={(event) => this.props.onChange(event.target.value)} />
+        onChange={(nothing, date) => this.props.onChange(date)} />
     );
   }
 }
 
 MRF.registerAttribute({
-  type: 'Textarea',
-  component: TextareaComponent,
+  type: 'DatePicker',
+  component: DatePickerComponent,
   schema: {
-    type: String,
+    type: Date,
   },
 });

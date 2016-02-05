@@ -1,46 +1,71 @@
-MRF.Field = React.createClass({
-  propTypes: {
-    value: React.PropTypes.any,
-    collection: React.PropTypes.object,
-    errorMessage: React.PropTypes.string,
-    fieldName: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func,
-  },
+const propTypes = {
+  /**
+   * The value of the field.
+   */
+  value: React.PropTypes.any,
 
-  getInitialState() {
-    return {};
-  },
+  /**
+   * Mongo Collection.
+   */
+  collection: React.PropTypes.object,
+
+  /**
+   * Error message if there is a error.
+   */
+  errorMessage: React.PropTypes.string,
+
+  /**
+   * The name of the field in the object.
+   */
+  fieldName: React.PropTypes.string.isRequired,
+
+  /**
+   * Call this function when the value changes.
+   */
+  onChange: React.PropTypes.func,
+};
+
+class FieldComponent extends React.Component {
 
   onChange(value) {
     this.props.onChange(this.props.fieldName, value);
-  },
+  }
+
+  getSchema() {
+    return this.props.collection.simpleSchema();
+  }
 
   getFieldSchema() {
-    return this.props.collection.simpleSchema().schema(this.props.fieldName);
-  },
+    return this.getSchema().schema(this.props.fieldName);
+  }
 
   getLabel() {
-    return this.props.collection.simpleSchema().label(this.props.fieldName);
-  },
+    return this.getSchema().label(this.props.fieldName);
+  }
 
   getComponent() {
     var component = MRF.getFieldComponent(this.getFieldSchema());
-    return component && React.createElement(component, this.getProps());
-  },
+    return component && React.createElement(component, this.getChildProps());
+  }
 
-  getProps() {
+  getChildProps() {
     return {
       value: this.props.value,
       label: this.getLabel(),
-      onChange: this.onChange,
+      onChange: this.onChange.bind(this),
       errorMessage: this.props.errorMessage,
       fieldSchema: this.getFieldSchema(),
+      schema: this.getSchema(),
     };
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div>{this.getComponent()}</div>
     );
-  },
-});
+  }
+};
+
+FieldComponent.propTypes = propTypes;
+
+MRF.Field = FieldComponent;

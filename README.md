@@ -38,7 +38,7 @@ Posts.attachSchema({
   createdAt: {
     type: Date,
     index: 1,
-    mrfOptions: {
+    mrf: {
       omit: true,
     },
     autoValue: function() {
@@ -57,7 +57,7 @@ Posts.attachSchema({
 An insert form.
 
 ```jsx
-PostsCreate = React.createClass({
+class PostsCreate extends React.Component {
   render() {
     return (
       <div>
@@ -73,13 +73,13 @@ PostsCreate = React.createClass({
       </div>
     );
   },
-});
+};
 ```
 
 An update form.
 
 ```jsx
-PostsUpdate = React.createClass({
+class PostsUpdate extends React.Component {
   render() {
     return (
       <div>
@@ -95,7 +95,7 @@ PostsUpdate = React.createClass({
       </div>
     );
   },
-});
+};
 ```
 
 ## Create Components
@@ -123,16 +123,9 @@ And the component must have the following propTypes:
 
 #### Example:
 
-```js
-var TextareaComponent = React.createClass({
-  propTypes: {
-    value: React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
-    errorMessage: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired,
-  },
-
-  render: function() {
+```jsx
+class TextareaComponent extends MRF.FieldType {
+  render() {
     return (
       <TextField
         ref="input"
@@ -144,8 +137,8 @@ var TextareaComponent = React.createClass({
         errorText={this.props.errorMessage}
         onChange={(event) => this.props.onChange(event.target.value)} />
     );
-  },
-});
+  }
+}
 
 MRF.registerAttribute({
   type: 'Textarea',

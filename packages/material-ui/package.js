@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf-material-ui',
-  version: '0.0.1',
+  version: '0.1.0',
   summary: 'Automatic forms creation with Simple Schema and React for Material-UI',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'check',
     'react@0.14.3',
     'izzilab:material-ui@0.2.6',
-    'nicolaslopezj:mrf@0.0.1',
+    'nicolaslopezj:mrf@0.1.0',
   ]);
 
   api.imply([
@@ -25,13 +25,11 @@ Package.onUse(function(api) {
   api.addFiles([
     'components/array.jsx',
     'components/object.jsx',
-    'components/string.jsx',
+    'components/text-field.jsx',
     'components/textarea.jsx',
-    'components/number.jsx',
-    'components/date.jsx',
+    'components/date-picker.jsx',
     'components/multiple-checkbox.jsx',
     'components/select-with-method.jsx',
-    'register.jsx',
   ], 'client');
 
   api.export('MRF');

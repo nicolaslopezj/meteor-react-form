@@ -1,20 +1,19 @@
-MRF.registerAttribute = function({ type, component, schema }) {
+MRF.registerAttribute = function({ type, component, schema, defaultOptions }) {
   MRF.Attributes[type] = { type, component, schema };
-  MRF.Attribute[type] = function(overrideSchema, options) {
+  MRF.Attribute[type] = function(overrideSchema = {}) {
+    var options = _.extend(defaultOptions || {}, overrideSchema.mrf || {});
     var typeSchema = _.clone(_.isFunction(schema) ? schema(options) : schema);
-    return _.extend(typeSchema, overrideSchema, {
-      mrf: {
-        type: type,
-        options: options,
-      },
-    });
+    var finalSchema = _.extend(typeSchema || {}, overrideSchema);
+    finalSchema.mrf = options;
+    finalSchema.mrfType = type;
+    return finalSchema;
   };
 };
 
 MRF.getFieldTypeName = function(fieldSchema) {
   var typeName = null;
-  if (fieldSchema.mrf && fieldSchema.mrf.type) {
-    typeName = fieldSchema.mrf.type;
+  if (fieldSchema.mrfType) {
+    typeName = fieldSchema.mrfType;
   } else if (fieldSchema.type === String) {
     typeName = 'String';
   } else if (fieldSchema.type === Number) {
@@ -33,7 +32,8 @@ MRF.getFieldTypeName = function(fieldSchema) {
 };
 
 MRF.getFieldType = function(fieldSchema) {
-  return MRF.Attributes[MRF.getFieldTypeName(fieldSchema)];
+  var typeName = MRF.getFieldTypeName(fieldSchema);
+  return MRF.Attributes[typeName];
 };
 
 MRF.getFieldComponent = function(fieldSchema) {

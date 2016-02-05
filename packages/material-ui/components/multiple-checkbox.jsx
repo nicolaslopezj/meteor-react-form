@@ -2,15 +2,7 @@ var {
   Checkbox,
 } = MUI;
 
-MRF.Components.MultipleCheckbox = React.createClass({
-  propTypes: {
-    value: React.PropTypes.array,
-    label: React.PropTypes.string.isRequired,
-    errorMessage: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired,
-    fieldSchema: React.PropTypes.object,
-  },
-
+class MultipleCheckboxComponent extends MRF.FieldType {
   onCheck(value, currentVal) {
     var newVal = [];
     if (_.contains(currentVal, value)) {
@@ -20,11 +12,11 @@ MRF.Components.MultipleCheckbox = React.createClass({
     }
 
     this.props.onChange(newVal);
-  },
+  }
 
   renderOptions() {
     var currentVal = this.props.value || [];
-    return this.props.fieldSchema.mrfOptions.options.map((option) => {
+    return this.props.fieldSchema.mrf.options.map((option) => {
       return (
         <div key={option.value} style={{ marginTop: 10 }}>
           <Checkbox
@@ -35,7 +27,7 @@ MRF.Components.MultipleCheckbox = React.createClass({
         </div>
       );
     });
-  },
+  }
 
   render() {
     return (
@@ -45,5 +37,13 @@ MRF.Components.MultipleCheckbox = React.createClass({
         {this.renderOptions()}
       </div>
     );
+  }
+}
+
+MRF.registerAttribute({
+  type: 'MultipleCheckbox',
+  component: MultipleCheckboxComponent,
+  schema: {
+    type: [String],
   },
 });
