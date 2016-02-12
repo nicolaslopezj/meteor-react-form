@@ -25,11 +25,6 @@ const propTypes = {
   onSuccess: React.PropTypes.func,
 
   /**
-   * Render automatically the components inside the form.
-   */
-  autoRender: React.PropTypes.bool,
-
-  /**
    * Keep arrays when updating.
    */
   keepArrays: React.PropTypes.bool,
@@ -45,6 +40,7 @@ class FormComponent extends React.Component {
     super(props);
     this.state = {
       doc: _.clone(this.props.doc) || {},
+      changes: {},
       validationContext: this.props.collection.simpleSchema().newContext(),
       errorMessages: {},
     };
@@ -57,18 +53,23 @@ class FormComponent extends React.Component {
     } else {
       if (_.isFunction(this.props.onSuccess)) {
         this.props.onSuccess(docId);
+        this.setState({ changes: {} });
       }
     }
   }
 
   submit() {
     if (this.props.type == 'insert') {
-      var doc = DotObject.object(DotObject.dot(this.state.doc));
+      var doc = DotObject.object(DotObject.dot(this.state.changes));
       this.props.collection.insert(doc, { validationContext: `mrf${this.props.type}` }, this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
-      var modifier = MRF.Utility.docToModifier(this.state.doc, { keepArrays: this.props.keepArrays });
-      console.log(modifier);
-      this.props.collection.update(this.state.doc._id, modifier, { validationContext: `mrf${this.props.type}` }, this.onCommit.bind(this));
+      var modifier = MRF.Utility.docToModifier(this.state.changes, { keepArrays: this.props.keepArrays });
+      if (!_.isEqual(modifier, {})) {
+        console.log('is true', modifier);
+        this.props.collection.update(this.state.doc._id, modifier, { validationContext: `mrf${this.props.type}` }, this.onCommit.bind(this));
+      } else {
+        this.props.onSuccess();
+      }
     }
   }
 
@@ -84,20 +85,30 @@ class FormComponent extends React.Component {
   }
 
   onValueChange(fieldName, newValue) {
-    this.state.doc[fieldName] = newValue;
-    this.setState({ doc: this.state.doc });
+    var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val;
+    var changes = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.changes }).val;
+    this.setState({ doc, changes });
   }
 
   renderChildren(children) {
     return React.Children.map(children, (child) => {
       var fieldName = child.props.fieldName;
-      return React.cloneElement(child, {
-        collection: this.props.collection,
-        value: this.state.doc ? this.state.doc[fieldName] : undefined,
-        onChange: this.onValueChange.bind(this),
-        errorMessage: this.state.errorMessages[fieldName],
-        errorMessages: this.state.errorMessages,
-      });
+      var options = {};
+      if (child.type.recieveMRFData) {
+        options = {
+          collection: this.props.collection,
+          value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
+          onChange: this.onValueChange.bind(this),
+          errorMessage: this.state.errorMessages[fieldName],
+          errorMessages: this.state.errorMessages,
+        };
+      } else {
+        options = {
+          children: this.renderChildren(child.props.children),
+        };
+      }
+
+      return React.cloneElement(child, options);
     });
   }
 
@@ -139,7 +150,7 @@ class FormComponent extends React.Component {
   }
 
   render() {
-    if (this.props.autoRender) {
+    if (!this.props.children) {
       return <div>{this.renderChildren(this.generateChildren())}</div>;
     } else {
       return <div>{this.renderChildren(this.props.children)}</div>;

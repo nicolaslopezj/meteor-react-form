@@ -66,7 +66,6 @@ class PostsCreate extends React.Component {
           collection={Posts}
           type="insert"
           ref="form"
-          autoRender={true}
           onSuccess={(docId) => FlowRouter.go('posts.update', { postId: docId })}
           />
         <RaisedButton label="Create" onTouchTap={() => this.refs.form.submit()}/>
@@ -88,7 +87,6 @@ class PostsUpdate extends React.Component {
           collection={Posts}
           type="update"
           ref="form"
-          autoRender={true}
           doc={this.props.post}
           />
         <RaisedButton primary={true} label="Save" onTouchTap={() => this.refs.form.submit()}/>

@@ -67,5 +67,6 @@ class FieldComponent extends React.Component {
 };
 
 FieldComponent.propTypes = propTypes;
+FieldComponent.recieveMRFData = true;
 
 MRF.Field = FieldComponent;

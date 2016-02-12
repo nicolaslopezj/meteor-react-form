@@ -29,14 +29,23 @@ class ArrayComponent extends MRF.ObjectComponent {
     return value.map((item, index) => {
       var component = React.Children.map(this.props.children, (child) => {
         var fieldName = child.props.fieldName;
-        return React.cloneElement(child, {
-          fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
-          collection: this.props.collection,
-          value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
-          onChange: this.onValueChange.bind(this),
-          errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
-          errorMessages: this.props.errorMessages,
-        });
+        var options = {};
+        if (child.type.recieveMRFData) {
+          options = {
+            fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
+            collection: this.props.collection,
+            value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
+            onChange: this.onValueChange.bind(this),
+            errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
+            errorMessages: this.props.errorMessages,
+          };
+        } else {
+          options = {
+            children: this.renderChildren(child.props.children),
+          };
+        }
+
+        return React.cloneElement(child, options);
       });
       return this.renderChildrenItem({ index, component });
     });

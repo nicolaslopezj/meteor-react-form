@@ -50,19 +50,24 @@ class ObjectComponent extends React.Component {
 
   renderChildren() {
     return React.Children.map(this.props.children, (child) => {
-      if (child.type) {
-        var fieldName = child.props.fieldName;
-        return React.cloneElement(child, {
+      var fieldName = child.props.fieldName;
+      var options = {};
+      if (child.type.recieveMRFData) {
+        options = {
           fieldName: `${this.props.fieldName}.${fieldName}`,
           collection: this.props.collection,
           value: this.props.value ? this.props.value[fieldName] : undefined,
           onChange: this.props.onChange,
           errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${fieldName}`] : undefined,
           errorMessages: this.props.errorMessages,
-        });
+        };
       } else {
-        return child;
+        options = {
+          children: this.renderChildren(child.props.children),
+        };
       }
+
+      return React.cloneElement(child, options);
     });
   }
 
@@ -78,6 +83,7 @@ class ObjectComponent extends React.Component {
 }
 
 ObjectComponent.propTypes = propTypes;
+ObjectComponent.recieveMRFData = true;
 
 MRF.ObjectComponent = ObjectComponent;
 MRF.Object = ObjectComponent;
