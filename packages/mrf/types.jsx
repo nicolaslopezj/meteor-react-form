@@ -38,5 +38,9 @@ MRF.getFieldType = function(fieldSchema) {
 
 MRF.getFieldComponent = function(fieldSchema) {
   var type = MRF.getFieldType(fieldSchema);
+  if (!type) {
+    throw new Error(`No component for field ${fieldSchema.type}`);
+  }
+
   return type.component;
 };
