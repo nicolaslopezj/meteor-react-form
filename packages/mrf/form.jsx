@@ -65,7 +65,6 @@ class FormComponent extends React.Component {
     } else if (this.props.type == 'update') {
       var modifier = MRF.Utility.docToModifier(this.state.changes, { keepArrays: this.props.keepArrays });
       if (!_.isEqual(modifier, {})) {
-        console.log('is true', modifier);
         this.props.collection.update(this.state.doc._id, modifier, { validationContext: `mrf${this.props.type}` }, this.onCommit.bind(this));
       } else {
         this.props.onSuccess();
