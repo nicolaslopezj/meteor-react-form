@@ -85,7 +85,9 @@ class FormComponent extends React.Component {
   }
 
   onValueChange(fieldName, newValue) {
+    DotObject.del(fieldName, this.state.doc);
     var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val;
+    DotObject.del(fieldName, this.state.changes);
     var changes = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.changes }).val;
     this.setState({ doc, changes });
   }
