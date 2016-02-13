@@ -16,6 +16,7 @@ class CheckboxComponent extends MRF.FieldType {
           onCheck={() => this.props.onChange(!this.props.value)}
           errorText={this.props.errorMessage}
           label={this.props.label}
+          {...this.getPassProps()}
         />
       <span style={{ color: Colors.red500 }}>{this.props.errorMessage}</span>
       </div>

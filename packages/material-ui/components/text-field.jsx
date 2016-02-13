@@ -14,7 +14,8 @@ class TextFieldComponent extends MRF.FieldType {
         type={type}
         floatingLabelText={this.props.label}
         errorText={this.props.errorMessage}
-        onChange={(event) => this.props.onChange(event.target.value)}/>
+        onChange={(event) => this.props.onChange(event.target.value)}
+        {...this.getPassProps()}/>
     );
   }
 }

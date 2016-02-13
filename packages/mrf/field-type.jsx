@@ -37,6 +37,11 @@ const propTypes = {
 
 class FieldType extends React.Component {
 
+  getPassProps() {
+    var options = (this.props.fieldSchema && this.props.fieldSchema.mrf) || {};
+    return options.passProps || {};
+  }
+
 }
 
 FieldType.propTypes = propTypes;

@@ -13,13 +13,33 @@ class SelectWithMethodComponent extends MRF.FieldType {
       response: [],
       searchText: '',
       isCalling: false,
+      hasTitleFor: null,
     };
   }
 
   componentDidMount() {
+    this.updateLabel(this.props.value);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.updateLabel(nextProps.value);
+    }
+  }
+
+  updateLabel(value) {
+    if (!value) {
+      this.setState({ searchText: '' });
+      return;
+    }
+
+    if (this.state.selected && value == this.state.selected.value) {
+      return;
+    }
+
     var labelMethodName = this.props.fieldSchema.mrf.labelMethodName;
     var connection = this.props.fieldSchema.mrf.connection || Meteor;
-    connection.call(labelMethodName, this.props.value, (error, response) => {
+    connection.call(labelMethodName, value, (error, response) => {
       if (!error) {
         this.setState({ searchText: response });
       }
@@ -51,6 +71,13 @@ class SelectWithMethodComponent extends MRF.FieldType {
     this.setState({ selected });
   }
 
+  onBlur() {
+    // this is not been called
+    if (!this.props.value) {
+      this.setState({ searchText: '' });
+    }
+  }
+
   render() {
     return (
       <AutoComplete
@@ -62,7 +89,9 @@ class SelectWithMethodComponent extends MRF.FieldType {
         onUpdateInput={this.onUpdateText.bind(this)}
         floatingLabelText={this.props.label}
         onNewRequest={this.onItemSelected.bind(this)}
-        errorText={this.props.errorMessage} />
+        errorText={this.props.errorMessage}
+        onBlur={this.onBlur.bind(this)}
+        {...this.getPassProps()} />
     );
   }
 }
