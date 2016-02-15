@@ -34,8 +34,21 @@ MRF.getFieldComponent = function(fieldSchema, fieldName) {
     throw new Error(`No component for field "${fieldName}".`);
   }
 
-  if (type.allowedTypes && !_.contains(type.allowedTypes, fieldSchema.type)) {
-    throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`);
+  if (type.allowedTypes) {
+    var contains = false;
+    type.allowedTypes.map((allowedType) => {
+      if (_.isEqual(fieldSchema.type, allowedType)) {
+        contains = true;
+      }
+    });
+    if (fieldSchema.type === Array) {
+      // Field type checker disabled for arrays
+      contains = true;
+    }
+
+    if (!contains) {
+      throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`);
+    }
   }
 
   if (type.optionsDefinition) {

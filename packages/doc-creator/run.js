@@ -93,5 +93,3 @@ Options:
 ${options}
 `;
 };
-
-MRFDocCreator.run();

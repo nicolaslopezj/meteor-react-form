@@ -203,14 +203,14 @@ class FormComponent extends React.Component {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
       var type = MRF.getFieldTypeName(keySchema);
-      if (type == 'Array') {
+      if (type == 'array') {
         var _keys = schema.objectKeys(`${fullKey}.$`);
         return (
           <this.props.arrayComponent fieldName={key} key={key}>
             {this.generateInputsForKeys(_keys, `${fullKey}.$`)}
           </this.props.arrayComponent>
         );
-      } else if (type == 'Object') {
+      } else if (type == 'object') {
         var _keys = schema.objectKeys(fullKey);
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>

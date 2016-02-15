@@ -47,7 +47,7 @@ MRF.registerType({
   allowedTypes: [[String], [Number]],
   description: 'Select multiple values with checkboxes.',
   optionsDefinition: {
-    options: [{ label: String, value: String }],
+    options: [{ label: String, value: Match.OneOf(String, Number) }],
   },
   optionsDescription: {
     options: 'The options for the checkbox. Each item must have ```label``` and ```value```.',
