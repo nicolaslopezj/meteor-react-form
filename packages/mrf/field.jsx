@@ -44,7 +44,7 @@ class FieldComponent extends React.Component {
   }
 
   getComponent() {
-    var component = MRF.getFieldComponent(this.getFieldSchema());
+    var component = MRF.getFieldComponent(this.getFieldSchema(), this.props.fieldName);
     return component && React.createElement(component, this.getChildProps());
   }
 

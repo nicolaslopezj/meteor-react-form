@@ -4,6 +4,10 @@ class ArrayComponent extends MRF.ObjectComponent {
     var index = withoutSelf.split('.')[0];
     var plainFieldName = withoutSelf.replace(`${index}.`, '');
 
+    if (!this.props.value[index]) {
+      this.props.value[index] = {};
+    }
+
     this.props.value[index][plainFieldName] = newValue;
     this.props.onChange(this.props.fieldName, this.props.value);
   }

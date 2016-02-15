@@ -23,7 +23,7 @@ class MultipleCheckboxComponent extends MRF.FieldType {
             checked={_.contains(currentVal, option.value)}
             onCheck={() => this.onCheck(option.value, currentVal)}
             label={option.label}
-            {...this.getPassProps()}
+            {...this.passProps}
           />
         </div>
       );
@@ -41,10 +41,15 @@ class MultipleCheckboxComponent extends MRF.FieldType {
   }
 }
 
-MRF.registerAttribute({
-  type: 'MultipleCheckbox',
+MRF.registerType({
+  type: 'multiple-checkbox',
   component: MultipleCheckboxComponent,
-  schema: {
-    type: [String],
+  allowedTypes: [[String], [Number]],
+  description: 'Select multiple values with checkboxes.',
+  optionsDefinition: {
+    options: [{ label: String, value: String }],
+  },
+  optionsDescription: {
+    options: 'The options for the checkbox. Each item must have ```label``` and ```value```.',
   },
 });

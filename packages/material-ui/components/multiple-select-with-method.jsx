@@ -3,7 +3,7 @@ var {
   MenuItem,
 } = MUI;
 
-class SelectWithMethodComponent extends MRF.FieldType {
+class MultipleSelectWithMethodComponent extends MRF.FieldType {
 
   constructor(props) {
     super(props);
@@ -78,37 +78,36 @@ class SelectWithMethodComponent extends MRF.FieldType {
     }
   }
 
+  renderChips() {
+    return 'chips';
+  }
+
   render() {
     return (
-      <AutoComplete
-        ref="input"
-        fullWidth={true}
-        searchText={this.state.searchText}
-        dataSource={this.state.dataSource}
-        filter={(searchText, key) => true}
-        onUpdateInput={this.onUpdateText.bind(this)}
-        floatingLabelText={this.props.label}
-        onNewRequest={this.onItemSelected.bind(this)}
-        errorText={this.props.errorMessage}
-        onBlur={this.onBlur.bind(this)}
-        {...this.passProps} />
+      <div>
+        {this.renderChips()}
+        <AutoComplete
+          ref="input"
+          fullWidth={true}
+          searchText={this.state.searchText}
+          dataSource={this.state.dataSource}
+          filter={(searchText, key) => true}
+          onUpdateInput={this.onUpdateText.bind(this)}
+          floatingLabelText={this.props.label}
+          onNewRequest={this.onItemSelected.bind(this)}
+          errorText={this.props.errorMessage}
+          onBlur={this.onBlur.bind(this)}
+          {...this.passProps} />
+      </div>
     );
   }
 }
 
 MRF.registerType({
-  type: 'select-with-method',
-  component: SelectWithMethodComponent,
-  allowedTypes: [String, Number],
-  description: 'Select input that connects with a Meteor Method to fetch data',
-  optionsDefinition: {
-    methodName: String,
-    labelMethodName: String,
-    connection: Match.Optional(Match.Any),
-  },
-  optionsDescription: {
-    methodName: 'Meteor method that recieves the search string and returns an array of items with ```label``` and ```value```.',
-    labelMethodName: 'Meteor method that recieves the value and must return the label.',
-    connection: 'A Meteor connection.',
-  },
+  type: 'multiple-select-with-method',
+  component: MultipleSelectWithMethodComponent,
+  allowedTypes: [[String], [Number]],
+
+  //description: 'Multiple select input that connects with a Meteor Method to fetch data',
+  optionsDefinition: {},
 });

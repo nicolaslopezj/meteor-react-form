@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf',
-  version: '0.1.2',
+  version: '0.3.0',
   summary: 'Automatic forms creation with Simple Schema and React',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
@@ -28,11 +28,11 @@ Package.onUse(function(api) {
     'utility.js',
     'dot.js',
     'field.jsx',
+    'object.jsx',
+    'array.jsx',
     'form.jsx',
     'types.jsx',
     'field-type.jsx',
-    'object.jsx',
-    'array.jsx',
   ], 'client');
 
   api.export('MRF');

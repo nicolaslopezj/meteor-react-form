@@ -14,15 +14,16 @@ class TextareaComponent extends MRF.FieldType {
         floatingLabelText={this.props.label}
         errorText={this.props.errorMessage}
         onChange={(event) => this.props.onChange(event.target.value)}
-        {...this.getPassProps()} />
+        {...this.passProps} />
     );
   }
 }
 
-MRF.registerAttribute({
-  type: 'Textarea',
+MRF.registerType({
+  type: 'textarea',
   component: TextareaComponent,
-  schema: {
-    type: String,
-  },
+  allowedTypes: [String],
+  description: 'Textarea',
+  optionsDefinition: {},
+  optionsDescription: {},
 });

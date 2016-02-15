@@ -16,11 +16,11 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use(['ecmascript', 'nicolaslopezj:mrf', 'izzilab:material-ui', 'react', 'numeral:numeral']);
-  api.addFiles([
+  /*api.addFiles([
     'percentage.jsx',
     'number.jsx',
     'money.jsx',
-  ], 'client');
+  ], 'client');*/
 });
 
 Package.onTest(function(api) {

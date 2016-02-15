@@ -67,12 +67,12 @@ const propTypes = {
   /**
    * The component for the array wrapper
    */
-  arrayComponent: React.PropTypes.element,
+  arrayComponent: React.PropTypes.any,
 
   /**
    * The component for the object wrapper
    */
-  objectComponent: React.PropTypes.element,
+  objectComponent: React.PropTypes.any,
 };
 
 const defaultProps = {
@@ -206,16 +206,16 @@ class FormComponent extends React.Component {
       if (type == 'Array') {
         var _keys = schema.objectKeys(`${fullKey}.$`);
         return (
-          <MRF.Array fieldName={key} key={key}>
+          <this.props.arrayComponent fieldName={key} key={key}>
             {this.generateInputsForKeys(_keys, `${fullKey}.$`)}
-          </MRF.Array>
+          </this.props.arrayComponent>
         );
       } else if (type == 'Object') {
         var _keys = schema.objectKeys(fullKey);
         return (
-          <MRF.Object fieldName={key} key={fullKey}>
+          <this.props.objectComponent fieldName={key} key={fullKey}>
             {this.generateInputsForKeys(_keys, fullKey)}
-          </MRF.Object>
+          </this.props.objectComponent>
         );
       } else {
         return <MRF.Field fieldName={key} key={fullKey}/>;

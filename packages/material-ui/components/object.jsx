@@ -14,4 +14,5 @@ class MaterialObject extends MRF.ObjectComponent {
   }
 }
 
-MRF.Object = MaterialObject;
+//MRF.Object = MaterialObject;
+MRF.Form.defaultProps.objectComponent = MaterialObject;

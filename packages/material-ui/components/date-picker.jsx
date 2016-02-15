@@ -12,15 +12,24 @@ class DatePickerComponent extends MRF.FieldType {
         floatingLabelText={this.props.label}
         errorText={this.props.errorMessage}
         onChange={(nothing, date) => this.props.onChange(date)}
-        {...this.getPassProps()} />
+        {...this.passProps} />
     );
   }
 }
 
-MRF.registerAttribute({
-  type: 'DatePicker',
+MRF.registerType({
+  type: 'date-picker',
   component: DatePickerComponent,
-  schema: {
-    type: Date,
+  allowedTypes: [Date],
+  description: 'Material UI Date picker.',
+  optionsDefinition: {
+    minDate: Match.Optional(Date),
+    maxDate: Match.Optional(Date),
+    formatDate: Match.Optional(Function),
+  },
+  optionsDescription: {
+    minDate: 'Minimum date for the picker.',
+    maxDate: 'Maximum date for the picker.',
+    formatDate: 'Takes the date as a parameters and must return a string.',
   },
 });

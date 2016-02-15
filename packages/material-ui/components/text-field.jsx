@@ -4,8 +4,7 @@ var {
 
 class TextFieldComponent extends MRF.FieldType {
   render() {
-    var options = (this.props.fieldSchema && this.props.fieldSchema.mrf) || {};
-    var type = options.type || this.type;
+    var type = this.mrf.type || this.type;
     return (
       <TextField
         ref="input"
@@ -15,19 +14,20 @@ class TextFieldComponent extends MRF.FieldType {
         floatingLabelText={this.props.label}
         errorText={this.props.errorMessage}
         onChange={(event) => this.props.onChange(event.target.value)}
-        {...this.getPassProps()}/>
+        {...this.passProps} />
     );
   }
 }
 
-MRF.registerAttribute({
-  type: 'TextField',
+MRF.registerType({
+  type: 'text',
   component: TextFieldComponent,
-  schema: {
-    type: String,
+  description: 'Simple checkbox field.',
+  optionsDefinition: {
+    type: Match.Optional(String),
   },
-  defaultOptions: {
-    type: 'text',
+  optionsDescription: {
+    type: 'Input type, it can be email, password, etc.',
   },
 });
 
@@ -38,12 +38,9 @@ class StringFieldComponent extends TextFieldComponent {
   }
 }
 
-MRF.registerAttribute({
-  type: 'String',
+MRF.registerType({
+  type: 'string',
   component: StringFieldComponent,
-  schema: {
-    type: String,
-  },
 });
 
 class NumberFieldComponent extends TextFieldComponent {
@@ -53,12 +50,9 @@ class NumberFieldComponent extends TextFieldComponent {
   }
 }
 
-MRF.registerAttribute({
-  type: 'Number',
+MRF.registerType({
+  type: 'number',
   component: NumberFieldComponent,
-  schema: {
-    type: String,
-  },
 });
 
 class DateFieldComponent extends TextFieldComponent {
@@ -68,10 +62,7 @@ class DateFieldComponent extends TextFieldComponent {
   }
 }
 
-MRF.registerAttribute({
-  type: 'Date',
+MRF.registerType({
+  type: 'date',
   component: DateFieldComponent,
-  schema: {
-    type: String,
-  },
 });

@@ -32,9 +32,13 @@ Posts.attachSchema({
   title: {
     type: String,
   },
-  body: MRF.Attribute.Textarea({
+  body: {
+    type: String,
     label: 'Content',
-  }),
+    mrf: {
+      type: 'textarea',
+    },
+  },
   createdAt: {
     type: Date,
     index: 1,
@@ -96,21 +100,24 @@ class PostsUpdate extends React.Component {
 };
 ```
 
-## Create Components
+## Material UI Form Types
+
+[Form Types](#types)
+
+## Custom Input Types
 
 MRF is built from the idea that you can create custom components easily.
 
-First, you have to register the attribute:
+First, you have to register the type:
 
 ```js
-MRF.registerAttribute(options);
+MRF.registerType(options);
 ```
 
 **Options:**
 
 - **type**: *String*. The name of the attribute.
 - **component**: *React Component*. The component of the field.
-- **schema**: *String* or *Function*. The schema of the field, for example, ```{ type: String }```.
 
 And the component must have the following propTypes:
 
@@ -122,7 +129,7 @@ And the component must have the following propTypes:
 #### Example:
 
 ```jsx
-class TextareaComponent extends MRF.FieldType {
+class MyTextareaComponent extends MRF.FieldType {
   render() {
     return (
       <TextField
@@ -138,18 +145,16 @@ class TextareaComponent extends MRF.FieldType {
   }
 }
 
-MRF.registerAttribute({
-  type: 'Textarea',
-  component: TextareaComponent,
-  schema: {
-    type: String,
-  },
+MRF.registerType({
+  type: 'textarea',
+  component: MyTextareaComponent,
 });
 ```
 
 ## To Do
 
 - [x] Api to create custom components.
+- [ ] Create all basic input types for Material UI.
 - [ ] Make a better documentation.
 - [ ] Create more callbacks.
 - [ ] Add more form type, like *method*.

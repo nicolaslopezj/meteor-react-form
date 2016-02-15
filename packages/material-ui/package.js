@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf-material-ui',
-  version: '0.1.1',
+  version: '0.3.0',
   summary: 'Automatic forms creation with Simple Schema and React for Material-UI',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
@@ -30,6 +30,7 @@ Package.onUse(function(api) {
     'components/date-picker.jsx',
     'components/multiple-checkbox.jsx',
     'components/select-with-method.jsx',
+    'components/multiple-select-with-method.jsx',
     'components/checkbox.jsx',
   ], 'client');
 

@@ -1,31 +1,23 @@
-MRF.registerAttribute = function({ type, component, schema, defaultOptions }) {
-  MRF.Attributes[type] = { type, component, schema };
-  MRF.Attribute[type] = function(overrideSchema = {}) {
-    var options = _.extend(defaultOptions || {}, overrideSchema.mrf || {});
-    var typeSchema = _.clone(_.isFunction(schema) ? schema(options) : schema);
-    var finalSchema = _.extend(typeSchema || {}, overrideSchema);
-    finalSchema.mrf = options;
-    finalSchema.mrfType = type;
-    return finalSchema;
-  };
+MRF.registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
+  MRF.Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
 };
 
 MRF.getFieldTypeName = function(fieldSchema) {
   var typeName = null;
-  if (fieldSchema.mrfType) {
-    typeName = fieldSchema.mrfType;
+  if (fieldSchema.mrf && fieldSchema.mrf.type) {
+    typeName = fieldSchema.mrf.type;
   } else if (fieldSchema.type === String) {
-    typeName = 'String';
+    typeName = 'string';
   } else if (fieldSchema.type === Number) {
-    typeName = 'Number';
+    typeName = 'number';
   } else if (fieldSchema.type === Boolean) {
-    typeName = 'Boolean';
+    typeName = 'boolean';
   } else if (fieldSchema.type === Date) {
-    typeName = 'Date';
+    typeName = 'date';
   } else if (fieldSchema.type === Object) {
-    typeName = 'Object';
+    typeName = 'object';
   } else if (fieldSchema.type === Array) {
-    typeName = 'Array';
+    typeName = 'array';
   }
 
   return typeName;
@@ -36,10 +28,26 @@ MRF.getFieldType = function(fieldSchema) {
   return MRF.Attributes[typeName];
 };
 
-MRF.getFieldComponent = function(fieldSchema) {
+MRF.getFieldComponent = function(fieldSchema, fieldName) {
   var type = MRF.getFieldType(fieldSchema);
   if (!type) {
-    throw new Error(`No component for field ${fieldSchema.type}`);
+    throw new Error(`No component for field "${fieldName}".`);
+  }
+
+  if (type.allowedTypes && !_.contains(type.allowedTypes, fieldSchema.type)) {
+    throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`);
+  }
+
+  if (type.optionsDefinition) {
+    var optionsDefinition = _.clone(type.optionsDefinition);
+    optionsDefinition.type = Match.Optional(String);
+    optionsDefinition.passProps = Match.Optional(Object);
+    var options = fieldSchema.mrf || {};
+    try {
+      check(options, optionsDefinition);
+    } catch (e) {
+      throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${e.message}`);
+    }
   }
 
   return type.component;

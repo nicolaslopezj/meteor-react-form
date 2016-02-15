@@ -29,4 +29,5 @@ class MaterialArray extends MRF.ArrayComponent {
   }
 }
 
-MRF.Array = MaterialArray;
+//MRF.Array = MaterialArray;
+MRF.Form.defaultProps.arrayComponent = MaterialArray;

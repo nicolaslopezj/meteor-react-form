@@ -16,7 +16,7 @@ class CheckboxComponent extends MRF.FieldType {
           onCheck={() => this.props.onChange(!this.props.value)}
           errorText={this.props.errorMessage}
           label={this.props.label}
-          {...this.getPassProps()}
+          {...this.passProps}
         />
       <span style={{ color: Colors.red500 }}>{this.props.errorMessage}</span>
       </div>
@@ -24,15 +24,16 @@ class CheckboxComponent extends MRF.FieldType {
   }
 }
 
-MRF.registerAttribute({
-  type: 'Checkbox',
+MRF.registerType({
+  type: 'checkbox',
   component: CheckboxComponent,
-  schema: {
-    type: Boolean,
-  },
+  allowedTypes: [Boolean],
+  description: 'Simple checkbox field.',
+  optionsDefinition: {},
+  optionsDescription: {},
 });
 
-MRF.registerAttribute({
-  type: 'Boolean',
+MRF.registerType({
+  type: 'boolean',
   component: CheckboxComponent,
 });
