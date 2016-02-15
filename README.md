@@ -102,7 +102,7 @@ class PostsUpdate extends React.Component {
 
 ## Material UI Form Types
 
-[Form Types](#types)
+[Form Types](https://github.com/nicolaslopezj/meteor-react-form/blob/master/TYPES.md)
 
 ## Custom Input Types
 
