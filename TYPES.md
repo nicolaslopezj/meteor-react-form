@@ -1,7 +1,7 @@
 # MRF Input Types
 
 These are the form types that come with the Material UI package.
-*If you need more or you don't use Material UI go to [Custom Input Types](#types).*
+*If you need more or you don't use Material UI go to [Custom Input Types](https://github.com/nicolaslopezj/meteor-react-form#custom-input-types).*
 
 To use this types, set ```{ mrf: { type: 'choosen-type' } }``` in the field schema.
 

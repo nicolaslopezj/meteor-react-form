@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'check',
     'react@0.14.3',
     'izzilab:material-ui@0.2.6',
-    'nicolaslopezj:mrf@0.1.1',
+    'nicolaslopezj:mrf@0.3.0',
   ]);
 
   api.imply([
