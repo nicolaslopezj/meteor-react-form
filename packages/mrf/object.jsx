@@ -48,8 +48,8 @@ export default class ObjectComponent extends React.Component {
     return this.getSchema().label(this.props.fieldName);
   }
 
-  renderChildren() {
-    return React.Children.map(this.props.children, (child) => {
+  renderChildren(children) {
+    return React.Children.map(children, (child) => {
       var fieldName = child.props.fieldName;
       var options = {};
       if (child.type.recieveMRFData) {
@@ -62,7 +62,7 @@ export default class ObjectComponent extends React.Component {
           errorMessages: this.props.errorMessages,
           form: this.props.form,
         };
-      } else {
+      } else if (child.props) {
         options = {
           children: this.renderChildren(child.props.children),
         };
@@ -77,7 +77,7 @@ export default class ObjectComponent extends React.Component {
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
         <div><b>{this.getLabel()}</b></div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren()}
+        {this.renderChildren(this.props.children)}
       </div>
     );
   }

@@ -4,11 +4,19 @@ var {
   Paper,
 } = MUI;
 
+const styles = {
+  label: {
+    color: 'rgba(0,0,0,0.5)',
+    marginBottom: 5,
+    fontSize: 12,
+  },
+};
+
 class MaterialObject extends MRF.ObjectComponent {
   render() {
     return (
       <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
-        <div><b>{this.getLabel()}</b></div>
+        <div style={styles.label}>{this.getLabel()}</div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         {this.renderChildren()}
       </Paper>
@@ -18,3 +26,4 @@ class MaterialObject extends MRF.ObjectComponent {
 
 //MRF.Object = MaterialObject;
 MRF.Form.defaultProps.objectComponent = MaterialObject;
+MRF.ObjectComponent = MaterialObject;

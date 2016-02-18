@@ -31,7 +31,11 @@ const getFieldType = function (fieldSchema, attributes) {
 };
 
 const getFieldComponent = function (fieldSchema, fieldName) {
-  var type = getFieldType(fieldSchema);
+  if (!fieldSchema) {
+    throw new Error(`There is no field "${fieldName}" in the schema.`);
+  }
+
+  var type = getFieldType(fieldSchema, fieldName);
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`);
   }
