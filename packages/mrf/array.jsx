@@ -44,6 +44,7 @@ export default class ArrayComponent extends ObjectComponent {
             onChange: this.onValueChange.bind(this),
             errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
             errorMessages: this.props.errorMessages,
+            form: this.props.form,
           };
         } else {
           options = {

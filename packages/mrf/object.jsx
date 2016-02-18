@@ -60,6 +60,7 @@ export default class ObjectComponent extends React.Component {
           onChange: this.props.onChange,
           errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${fieldName}`] : undefined,
           errorMessages: this.props.errorMessages,
+          form: this.props.form,
         };
       } else {
         options = {

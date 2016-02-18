@@ -37,7 +37,13 @@ const styles = {
   },
   progress: {
     backgroundColor: Colors.grey100,
+    marginTop: 20,
+    maxWidth: 300,
+  },
+  errorMessage: {
+    fontSize: 12,
     marginTop: 10,
+    color: Colors.red500,
   },
 };
 
@@ -50,6 +56,44 @@ class ImageComponent extends MRF.FieldType {
       isUploading: false,
       progress: 0,
     };
+    this.toDelete = [];
+    this.limbo = null;
+
+    window.onbeforeunload = () => {
+      this.componentWillUnmount();
+    };
+  }
+
+  onSuccess() {
+    this.toDelete.map((file) => {
+      this.mrf.delete({
+        file: file,
+        onReady: () => {
+
+        },
+
+        onError: (message) => {
+          alert(message);
+        },
+      });
+    });
+    this.toDelete = [];
+    this.limbo = null;
+  }
+
+  componentWillUnmount() {
+    if (!this.limbo) return true;
+    this.mrf.delete({
+      file: this.limbo,
+      onReady: () => {
+
+      },
+
+      onError: (message) => {
+        alert(message);
+      },
+    });
+    return true;
   }
 
   handleFile(e) {
@@ -74,6 +118,7 @@ class ImageComponent extends MRF.FieldType {
 
       onReady: ({ url, meta }) => {
         this.props.onChange({ url, meta });
+        this.limbo = { url, meta };
         this.setState({ isUploading: false, imageData: null });
       },
 
@@ -85,17 +130,8 @@ class ImageComponent extends MRF.FieldType {
   }
 
   handleDelete() {
-    this.mrf.delete({
-      file: this.props.value,
-      onReady: () => {
-        this.props.onChange(null);
-      },
-
-      onError: (message) => {
-        this.props.onChange(null);
-        alert(message);
-      },
-    });
+    this.toDelete.push(_.clone(this.props.value));
+    this.props.onChange(null);
   }
 
   renderPreview() {
@@ -131,8 +167,8 @@ class ImageComponent extends MRF.FieldType {
 
   renderProgress() {
     if (!this.state.isUploading) return;
-    const mode = this.state.progress == 1 ? 'determinate' : 'indeterminate';
-    return <LinearProgress mode={mode} style={styles.progress} value={this.state.progress} />;
+    const mode = this.state.progress !== 0 ? 'determinate' : 'indeterminate';
+    return <LinearProgress mode={mode} style={styles.progress} value={this.state.progress * 100} />;
   }
 
   render() {
@@ -145,7 +181,7 @@ class ImageComponent extends MRF.FieldType {
         {this.renderDeleteButton()}
         {this.renderButton()}
         {this.renderProgress()}
-        <span style={{ color: Colors.red500 }}>{this.props.errorMessage}</span>
+        <div style={styles.errorMessage}>{this.props.errorMessage}</div>
       </div>
     );
   }

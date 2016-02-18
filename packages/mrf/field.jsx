@@ -55,7 +55,9 @@ export default class Field extends React.Component {
       onChange: this.onChange.bind(this),
       errorMessage: this.props.errorMessage,
       fieldSchema: this.getFieldSchema(),
+      fieldName: this.props.fieldName,
       schema: this.getSchema(),
+      form: this.props.form,
     };
   }
 

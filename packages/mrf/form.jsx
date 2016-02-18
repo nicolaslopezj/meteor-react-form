@@ -102,6 +102,7 @@ export default class Form extends React.Component {
       validationContext: this.props.collection.simpleSchema().newContext(),
       errorMessages: {},
     };
+    this.fields = [];
 
     this.autoSave = _.throttle(this.submit.bind(this), 500, { leading: false });
   }
@@ -114,11 +115,24 @@ export default class Form extends React.Component {
     }
   }
 
+  registerComponent({ field, component }) {
+    this.fields.push({ field, component });
+  }
+
+  callChildFields({ method, input }) {
+    this.fields.map((field) => {
+      if (_.isFunction(field.component[method])) {
+        field.component[method](input);
+      }
+    });
+  }
+
   onCommit(error, docId) {
     this.setState({ errorMessages: {} });
     if (error) {
       this.handleError(error);
     } else {
+      this.callChildFields({ method: 'onSuccess' });
       if (_.isFunction(this.props.onSuccess)) {
         this.props.onSuccess(docId);
         this.setState({ changes: {} });
@@ -145,6 +159,7 @@ export default class Form extends React.Component {
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
+        this.callChildFields({ method: 'onSuccess' });
         this.props.onSuccess();
       }
     }
@@ -157,7 +172,6 @@ export default class Form extends React.Component {
     invalidKeys.map((field) => {
       errorMessages[field.name] = context.keyErrorMessage(field.name);
     });
-    console.log(invalidKeys);
     this.setState({ errorMessages });
   }
 
@@ -184,6 +198,7 @@ export default class Form extends React.Component {
           onChange: this.onValueChange.bind(this),
           errorMessage: this.state.errorMessages[fieldName],
           errorMessages: this.state.errorMessages,
+          form: this,
         };
       } else if (child.props) {
         options = {
