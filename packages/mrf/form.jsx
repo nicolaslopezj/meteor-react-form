@@ -1,3 +1,7 @@
+import ArrayComponent from './array.jsx';
+import ObjectComponent from './object.jsx';
+import DotObject from './dot.js';
+
 const propTypes = {
   /**
    * The document that has the original values for the form.
@@ -84,11 +88,11 @@ const defaultProps = {
   filter: true,
   replaceOnChange: true,
   formId: 'defaultFormId',
-  arrayComponent: MRF.Array,
-  objectComponent: MRF.Object,
+  arrayComponent: ArrayComponent,
+  objectComponent: ObjectComponent,
 };
 
-class FormComponent extends React.Component {
+export default class Form extends React.Component {
 
   constructor(props) {
     super(props);
@@ -147,13 +151,13 @@ class FormComponent extends React.Component {
   }
 
   handleError(error) {
-    console.log(error);
-    var context = this.props.collection.simpleSchema().namedContext(`mrf${this.props.type}`);
+    var context = this.props.collection.simpleSchema().namedContext(this.getValidationOptions().validationContext);
     var invalidKeys = context.invalidKeys();
     var errorMessages = {};
     invalidKeys.map((field) => {
       errorMessages[field.name] = context.keyErrorMessage(field.name);
     });
+    console.log(invalidKeys);
     this.setState({ errorMessages });
   }
 
@@ -237,7 +241,5 @@ class FormComponent extends React.Component {
   }
 };
 
-FormComponent.propTypes = propTypes;
-FormComponent.defaultProps = defaultProps;
-
-MRF.Form = FormComponent;
+Form.propTypes = propTypes;
+Form.defaultProps = defaultProps;

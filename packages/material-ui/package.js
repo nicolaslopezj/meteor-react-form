@@ -6,8 +6,8 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function(api) {
-  api.versionsFrom('1.2.1');
+Package.onUse(function (api) {
+  api.versionsFrom('1.3-modules-beta.8');
   api.use([
     'ecmascript',
     'underscore',
@@ -22,21 +22,10 @@ Package.onUse(function(api) {
     'nicolaslopezj:mrf',
   ]);
 
-  api.addFiles([
-    'components/array.jsx',
-    'components/object.jsx',
-    'components/text-field.jsx',
-    'components/textarea.jsx',
-    'components/date-picker.jsx',
-    'components/multiple-checkbox.jsx',
-    'components/select-with-method.jsx',
-    'components/checkbox.jsx',
-  ], 'client');
-
-  api.export('MRF');
+  api.mainModule('main.jsx', 'client');
 });
 
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use('ecmascript');
   api.use('tinytest');
 });

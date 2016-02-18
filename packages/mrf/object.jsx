@@ -30,7 +30,7 @@ const propTypes = {
   onChange: React.PropTypes.func,
 };
 
-class ObjectComponent extends React.Component {
+export default class ObjectComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -84,6 +84,3 @@ class ObjectComponent extends React.Component {
 
 ObjectComponent.propTypes = propTypes;
 ObjectComponent.recieveMRFData = true;
-
-MRF.ObjectComponent = ObjectComponent;
-MRF.Object = ObjectComponent;

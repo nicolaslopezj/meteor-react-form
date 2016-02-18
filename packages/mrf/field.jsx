@@ -25,7 +25,7 @@ const propTypes = {
   onChange: React.PropTypes.func,
 };
 
-class FieldComponent extends React.Component {
+export default class Field extends React.Component {
 
   onChange(value) {
     this.props.onChange(this.props.fieldName, value);
@@ -66,7 +66,5 @@ class FieldComponent extends React.Component {
   }
 };
 
-FieldComponent.propTypes = propTypes;
-FieldComponent.recieveMRFData = true;
-
-MRF.Field = FieldComponent;
+Field.propTypes = propTypes;
+Field.recieveMRFData = true;

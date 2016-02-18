@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf-numeral-material-ui',
-  version: '0.0.1',
+  version: '0.3.0',
 
   // Brief, one-line summary of the package.
   summary: '',
@@ -16,11 +16,12 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use(['ecmascript', 'nicolaslopezj:mrf', 'izzilab:material-ui', 'react', 'numeral:numeral']);
-  /*api.addFiles([
+  api.addFiles([
+    'numeral.jsx',
     'percentage.jsx',
     'number.jsx',
     'money.jsx',
-  ], 'client');*/
+  ], 'client');
 });
 
 Package.onTest(function(api) {

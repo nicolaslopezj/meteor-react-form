@@ -35,7 +35,7 @@ const propTypes = {
   schema: React.PropTypes.object.isRequired,
 };
 
-class FieldType extends React.Component {
+export default class FieldType extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,5 +46,3 @@ class FieldType extends React.Component {
 }
 
 FieldType.propTypes = propTypes;
-
-MRF.FieldType = FieldType;

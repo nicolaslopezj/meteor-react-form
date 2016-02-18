@@ -1,3 +1,5 @@
+import MRF from 'meteor/nicolaslopezj:mrf';
+
 var {
   RaisedButton,
   Paper,
@@ -29,5 +31,4 @@ class MaterialArray extends MRF.ArrayComponent {
   }
 }
 
-//MRF.Array = MaterialArray;
 MRF.Form.defaultProps.arrayComponent = MaterialArray;

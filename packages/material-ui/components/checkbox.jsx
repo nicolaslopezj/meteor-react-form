@@ -1,3 +1,5 @@
+import MRF from 'meteor/nicolaslopezj:mrf';
+
 var {
   Checkbox,
   Styles,

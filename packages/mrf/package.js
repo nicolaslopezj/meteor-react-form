@@ -6,8 +6,8 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function(api) {
-  api.versionsFrom('1.2.1');
+Package.onUse(function (api) {
+  api.versionsFrom('1.3-modules-beta.8');
   api.use([
     'ecmascript',
     'underscore',
@@ -23,22 +23,10 @@ Package.onUse(function(api) {
     'aldeed:collection2',
   ]);
 
-  api.addFiles([
-    'init.jsx',
-    'utility.js',
-    'dot.js',
-    'field.jsx',
-    'object.jsx',
-    'array.jsx',
-    'form.jsx',
-    'types.jsx',
-    'field-type.jsx',
-  ], 'client');
-
-  api.export('MRF');
+  api.mainModule('init.jsx', 'client');
 });
 
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use('ecmascript');
   api.use('tinytest');
 });
