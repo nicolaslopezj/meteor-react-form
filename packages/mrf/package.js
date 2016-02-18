@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf',
-  version: '0.4-modules-beta.0',
+  version: '0.4.0-beta-1',
   summary: 'Automatic forms creation with Simple Schema and React',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
