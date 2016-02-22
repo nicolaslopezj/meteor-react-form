@@ -16,7 +16,9 @@ Package.onUse(function (api) {
   api.use([
     'ecmascript',
     'underscore',
+    'jsx',
     'check',
+    'nicolaslopezj:mrf',
   ]);
 
   api.imply([
