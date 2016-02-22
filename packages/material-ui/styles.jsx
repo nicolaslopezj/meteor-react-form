@@ -1,6 +1,8 @@
-import {
+import { MUI, React } from 'meteor/npmdeps';
+
+var {
   Styles,
-} from 'material-ui';
+} = MUI;
 
 var {
   Colors,

@@ -1,9 +1,9 @@
-import React from 'react';
+import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-import {
+var {
   DatePicker,
-} from 'material-ui';
+} = MUI;
 
 class DatePickerComponent extends MRF.FieldType {
   render() {

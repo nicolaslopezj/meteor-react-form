@@ -1,12 +1,12 @@
-import React from 'react';
+import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 import styles from '../styles.jsx';
 
-import {
+var {
   Styles,
   SelectField,
   MenuItem,
-} from 'material-ui';
+} = MUI;
 
 var {
   Colors,

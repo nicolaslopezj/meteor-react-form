@@ -1,6 +1,5 @@
-import React from 'react';
+import { React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
-import numeral from 'numeral';
 
 import {
   TextField,

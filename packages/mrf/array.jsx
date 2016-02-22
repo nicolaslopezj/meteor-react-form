@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'meteor/npmdeps';
 import ObjectComponent from './object.jsx';
 
 const propTypes = {

@@ -1,16 +1,16 @@
-import React from 'react';
+import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 import {
   ImageComponent,
   styles,
 } from './image.jsx';
 
-import {
+var {
   RaisedButton,
   Styles,
   LinearProgress,
   Paper,
-} from 'material-ui';
+} = MUI;
 
 export default class FileComponent extends ImageComponent {
 

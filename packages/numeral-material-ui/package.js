@@ -6,12 +6,6 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Npm.depends({
-  react: '0.14.7',
-  'material-ui':'0.14.4',
-  numeral: '1.5.2',
-});
-
 Package.onUse(function (api) {
   api.versionsFrom('1.2.1');
   api.use([
@@ -19,6 +13,8 @@ Package.onUse(function (api) {
     'underscore',
     'check',
     'nicolaslopezj:mrf',
+    'npmdeps',
+    'numeral:numeral',
   ]);
   api.mainModule('main.jsx', 'client');
 });

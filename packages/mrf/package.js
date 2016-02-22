@@ -6,10 +6,6 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Npm.depends({
-  react: '0.14.7',
-});
-
 Package.onUse(function (api) {
   api.versionsFrom('1.3-modules-beta.8');
   api.use([
@@ -18,6 +14,7 @@ Package.onUse(function (api) {
     'check',
     'aldeed:simple-schema@1.5.3',
     'aldeed:collection2@2.8.0',
+    'npmdeps',
   ]);
 
   api.imply([

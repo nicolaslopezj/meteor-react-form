@@ -1,7 +1,6 @@
-import React from 'react';
+import { React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 import NumeralFieldComponent from './numeral.jsx';
-import numeral from 'numeral';
 
 class FormattedNumberComponent extends NumeralFieldComponent {
   unformatValue(label) {

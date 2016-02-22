@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'meteor/npmdeps';
 import ArrayComponent from './array.jsx';
 import ObjectComponent from './object.jsx';
 import DotObject from './dot.js';

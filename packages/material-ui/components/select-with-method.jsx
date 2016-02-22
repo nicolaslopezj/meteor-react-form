@@ -1,11 +1,11 @@
-import React from 'react';
+import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-import {
+var {
   AutoComplete,
   MenuItem,
   Styles,
-} from 'material-ui';
+} = MUI;
 
 var {
   Colors,

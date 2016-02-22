@@ -1,3 +1,4 @@
+import { React } from 'meteor/npmdeps';
 import ArrayComponent from './array.jsx';
 import FieldType from './field-type.jsx';
 import Field from './field.jsx';

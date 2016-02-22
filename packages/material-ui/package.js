@@ -6,11 +6,6 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Npm.depends({
-  react: '0.14.7',
-  'material-ui':'0.14.4',
-});
-
 Package.onUse(function (api) {
   api.versionsFrom('1.3-modules-beta.8');
   api.use([
@@ -19,6 +14,7 @@ Package.onUse(function (api) {
     'jsx',
     'check',
     'nicolaslopezj:mrf',
+    'npmdeps',
   ]);
 
   api.imply([
