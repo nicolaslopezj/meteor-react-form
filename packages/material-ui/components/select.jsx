@@ -1,3 +1,4 @@
+import React from 'react';
 import MRF from 'meteor/nicolaslopezj:mrf';
 import styles from '../styles.jsx';
 

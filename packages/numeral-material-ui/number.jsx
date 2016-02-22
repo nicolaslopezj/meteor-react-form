@@ -1,3 +1,4 @@
+import React from 'react';
 import MRF from 'meteor/nicolaslopezj:mrf';
 import NumeralFieldComponent from './numeral.jsx';
 import numeral from 'numeral';
