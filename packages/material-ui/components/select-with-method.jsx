@@ -1,10 +1,10 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   AutoComplete,
   MenuItem,
   Styles,
-} = MUI;
+} from 'material-ui';
 
 var {
   Colors,

@@ -1,9 +1,13 @@
 Package.describe({
   name: 'nicolaslopezj:mrf',
-  version: '0.4.0-beta-1',
+  version: '0.4.0-beta-2',
   summary: 'Automatic forms creation with Simple Schema and React',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
+});
+
+Npm.depends({
+  react: '0.14.7',
 });
 
 Package.onUse(function (api) {
@@ -12,13 +16,12 @@ Package.onUse(function (api) {
     'ecmascript',
     'underscore',
     'check',
-    'react@0.14.3',
     'aldeed:simple-schema@1.5.3',
     'aldeed:collection2@2.8.0',
   ]);
 
   api.imply([
-    'react',
+    'jsx',
     'aldeed:simple-schema',
     'aldeed:collection2',
   ]);

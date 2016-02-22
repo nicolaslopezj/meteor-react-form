@@ -1,3 +1,5 @@
+import React from 'react';
+
 const propTypes = {
   /**
    * The value of the field.

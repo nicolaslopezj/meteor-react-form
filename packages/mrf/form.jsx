@@ -1,3 +1,4 @@
+import React from 'react';
 import ArrayComponent from './array.jsx';
 import ObjectComponent from './object.jsx';
 import DotObject from './dot.js';

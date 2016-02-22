@@ -1,3 +1,4 @@
+import React from 'react';
 import ObjectComponent from './object.jsx';
 
 const propTypes = {

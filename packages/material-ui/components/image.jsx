@@ -1,17 +1,17 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   RaisedButton,
   Styles,
   LinearProgress,
   Paper,
-} = MUI;
+} from 'material-ui';
 
 var {
   Colors,
 } = Styles;
 
-const styles = {
+export const styles = {
   label: {
     color: 'rgba(0,0,0,0.5)',
     marginBottom: 5,
@@ -29,6 +29,7 @@ const styles = {
   },
   preview: {
     maxHeight: 150,
+    maxWidth: '100%',
     marginBottom: -5,
   },
   imageContainer: {
@@ -47,7 +48,7 @@ const styles = {
   },
 };
 
-class ImageComponent extends MRF.FieldType {
+export class ImageComponent extends MRF.FieldType {
 
   constructor(props) {
     super(props);
@@ -59,9 +60,9 @@ class ImageComponent extends MRF.FieldType {
     this.toDelete = [];
     this.limbo = null;
 
-    window.onbeforeunload = () => {
+    $(window).unload(() => {
       this.componentWillUnmount();
-    };
+    });
   }
 
   onSuccess() {
@@ -108,10 +109,14 @@ class ImageComponent extends MRF.FieldType {
 
     reader.readAsDataURL(file);
 
+    this.uploadFile(e.target.files);
+  }
+
+  uploadFile(file) {
     this.setState({ isUploading: true });
 
     this.mrf.upload({
-      file: e.target.files,
+      file: file,
       onProgress: (progress) => {
         this.setState({ progress });
       },

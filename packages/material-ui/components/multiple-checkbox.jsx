@@ -1,8 +1,8 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   Checkbox,
-} = MUI;
+} from 'material-ui';
 
 class MultipleCheckboxComponent extends MRF.FieldType {
   onCheck(value, currentVal) {

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf-numeral-material-ui',
-  version: '0.3.0',
+  version: '0.4.0-beta-2',
 
   // Brief, one-line summary of the package.
   summary: '',
@@ -13,18 +13,19 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function(api) {
-  api.versionsFrom('1.2.1');
-  api.use(['ecmascript', 'nicolaslopezj:mrf', 'izzilab:material-ui', 'react', 'numeral:numeral']);
-  api.addFiles([
-    'numeral.jsx',
-    'percentage.jsx',
-    'number.jsx',
-    'money.jsx',
-  ], 'client');
+Npm.depends({
+  react: '0.14.7',
+  'material-ui':'0.14.4',
+  numeral: '1.5.2',
 });
 
-Package.onTest(function(api) {
+Package.onUse(function (api) {
+  api.versionsFrom('1.2.1');
+  api.use(['ecmascript', 'nicolaslopezj:mrf', 'jsx']);
+  api.mainModule('main.jsx', 'client');
+});
+
+Package.onTest(function (api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('nicolaslopezj:mrf-percentage');

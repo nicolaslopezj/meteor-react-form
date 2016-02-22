@@ -7,3 +7,5 @@ import './components/select-with-method.jsx';
 import './components/text-field.jsx';
 import './components/textarea.jsx';
 import './components/image.jsx';
+import './components/file.jsx';
+import './components/select.jsx';

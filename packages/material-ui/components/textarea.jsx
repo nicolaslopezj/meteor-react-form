@@ -1,8 +1,8 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   TextField,
-} = MUI;
+} from 'material-ui';
 
 class TextareaComponent extends MRF.FieldType {
   render() {

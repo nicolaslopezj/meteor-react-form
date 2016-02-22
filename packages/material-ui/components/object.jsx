@@ -1,8 +1,8 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   Paper,
-} = MUI;
+} from 'material-ui';
 
 const styles = {
   label: {

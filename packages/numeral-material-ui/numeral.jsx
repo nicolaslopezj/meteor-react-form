@@ -1,8 +1,11 @@
-var {
-  TextField,
-} = MUI;
+import MRF from 'meteor/nicolaslopezj:mrf';
+import numeral from 'numeral';
 
-class NComponent extends MRF.FieldType {
+import {
+  TextField,
+}  from 'material-ui';
+
+export default class NComponent extends MRF.FieldType {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,5 +50,3 @@ class NComponent extends MRF.FieldType {
     );
   }
 }
-
-NumeralFieldComponent = NComponent;

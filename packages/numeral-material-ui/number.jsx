@@ -1,3 +1,7 @@
+import MRF from 'meteor/nicolaslopezj:mrf';
+import NumeralFieldComponent from './numeral.jsx';
+import numeral from 'numeral';
+
 class FormattedNumberComponent extends NumeralFieldComponent {
   unformatValue(label) {
     return label === '' ? undefined : numeral().unformat(label);

@@ -1,9 +1,9 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   Checkbox,
   Styles,
-} = MUI;
+} from 'material-ui';
 
 var {
   Colors,

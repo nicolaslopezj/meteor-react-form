@@ -1,9 +1,9 @@
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-var {
+import {
   RaisedButton,
   Paper,
-} = MUI;
+} from 'material-ui';
 
 const styles = {
   label: {

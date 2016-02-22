@@ -1,3 +1,5 @@
+import React from 'react';
+
 var Attributes = {};
 
 const registerType = function ({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
