@@ -14,6 +14,11 @@ export default styles = {
     marginBottom: 5,
     fontSize: 12,
   },
+  mirrorLabel: {
+    color: 'rgba(0,0,0,0.5)',
+    marginBottom: -6,
+    fontSize: 12,
+  },
   errorMessage: {
     fontSize: 12,
     marginTop: 10,

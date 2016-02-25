@@ -1,0 +1,4 @@
+{
+  "maximumLineLength": 500,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+}

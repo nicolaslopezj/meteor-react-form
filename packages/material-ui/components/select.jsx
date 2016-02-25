@@ -23,7 +23,7 @@ class SelectComponent extends MRF.FieldType {
   render() {
     return (
       <div style={styles.fieldContainer}>
-        <div style={styles.label}>
+        <div style={styles.mirrorLabel}>
           {this.props.label}
         </div>
         <SelectField

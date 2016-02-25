@@ -21,12 +21,12 @@ export const styles = {
   imageInput: {
     cursor: 'pointer',
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
+    top: '0',
+    bottom: '0',
+    right: '0',
+    left: '0',
     width: '100%',
-    opacity: 0,
+    opacity: '0',
   },
   preview: {
     maxHeight: 150,
@@ -153,13 +153,19 @@ export class ImageComponent extends MRF.FieldType {
     );
   }
 
+  openFileDialog() {
+    var fileInputDom = React.findDOMNode(this.refs.fileInput);
+    fileInputDom.click();
+  }
+
   renderButton() {
     if (this.state.isUploading || this.props.value) return;
     return (
       <RaisedButton
-        label="Upload image"
+        label='Upload image'
+        onClick={this.openFileDialog.bind(this)}
         {...this.passProps}>
-        <input type="file" style={styles.imageInput} accept="image/*" onChange={this.handleFile.bind(this)} />
+        <input type='file' ref='fileInput' style={styles.imageInput} accept='image/*' onChange={this.handleFile.bind(this)} />
       </RaisedButton>
     );
   }
@@ -167,7 +173,7 @@ export class ImageComponent extends MRF.FieldType {
   renderDeleteButton() {
     if (!this.state.isUploading && !this.props.value) return;
     return (
-      <RaisedButton onClick={this.handleDelete.bind(this)} label="Delete image" />
+      <RaisedButton onClick={this.handleDelete.bind(this)} label='Delete image' />
     );
   }
 
