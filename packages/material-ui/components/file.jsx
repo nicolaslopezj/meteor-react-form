@@ -22,7 +22,7 @@ export default class FileComponent extends ImageComponent {
     if (!this.props.value) return;
     return (
       <p>
-        <a href={this.props.value.url} target="_blank">{this.props.value.url}</a>
+        <a href={this.props.value.url} target='_blank'>{this.props.value.url}</a>
       </p>
     );
   }
@@ -30,18 +30,21 @@ export default class FileComponent extends ImageComponent {
   renderButton() {
     if (this.state.isUploading || this.props.value) return;
     return (
-      <RaisedButton
-        label="Upload file"
-        {...this.passProps}>
-        <input type="file" style={styles.imageInput} onChange={this.handleFile.bind(this)} />
-      </RaisedButton>
+      <div>
+        <RaisedButton
+          label='Upload file'
+          onClick={this.openFileDialog.bind(this)}
+          {...this.passProps}>
+        </RaisedButton>
+        <input type='file' ref='fileInput' style={{display: 'none'}} accept='image/*' onChange={this.handleFile.bind(this)} />
+      </div>
     );
   }
 
   renderDeleteButton() {
     if (!this.props.value) return;
     return (
-      <RaisedButton onClick={this.handleDelete.bind(this)} label="Delete file" />
+      <RaisedButton onClick={this.handleDelete.bind(this)} label='Delete file' />
     );
   }
 };

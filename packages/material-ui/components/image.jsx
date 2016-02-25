@@ -18,16 +18,6 @@ export const styles = {
     marginBottom: 5,
     fontSize: 12,
   },
-  imageInput: {
-    cursor: 'pointer',
-    position: 'absolute',
-    top: '0',
-    bottom: '0',
-    right: '0',
-    left: '0',
-    width: '100%',
-    opacity: '0',
-  },
   preview: {
     maxHeight: 150,
     maxWidth: '100%',
@@ -161,12 +151,14 @@ export class ImageComponent extends MRF.FieldType {
   renderButton() {
     if (this.state.isUploading || this.props.value) return;
     return (
-      <RaisedButton
-        label='Upload image'
-        onClick={this.openFileDialog.bind(this)}
-        {...this.passProps}>
-        <input type='file' ref='fileInput' style={styles.imageInput} accept='image/*' onChange={this.handleFile.bind(this)} />
-      </RaisedButton>
+      <div>
+        <RaisedButton
+          label='Upload image'
+          onClick={this.openFileDialog.bind(this)}
+          {...this.passProps}>
+        </RaisedButton>
+        <input type='file' ref='fileInput' style={{display: 'none'}} accept='image/*' onChange={this.handleFile.bind(this)} />
+      </div>
     );
   }
 
