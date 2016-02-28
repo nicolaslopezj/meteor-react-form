@@ -1,7 +1,18 @@
+import { MUI, React } from 'meteor/npmdeps';
+import MRF from 'meteor/nicolaslopezj:mrf';
+
 var {
   RaisedButton,
   Paper,
 } = MUI;
+
+const styles = {
+  label: {
+    color: 'rgba(0,0,0,0.5)',
+    marginBottom: 5,
+    fontSize: 12,
+  },
+};
 
 class MaterialArray extends MRF.ArrayComponent {
   renderChildrenItem({ index, component }) {
@@ -9,7 +20,7 @@ class MaterialArray extends MRF.ArrayComponent {
       <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
         {component}
         <div style={{ marginTop: 10, textAlign: 'right' }}>
-          <RaisedButton label="Remove" onTouchTap={() => this.removeItem(index)}/>
+          <RaisedButton label={this.props.removeLabel} onTouchTap={() => this.removeItem(index)}/>
         </div>
       </Paper>
     );
@@ -18,16 +29,16 @@ class MaterialArray extends MRF.ArrayComponent {
   render() {
     return (
       <div style={{ marginTop: 20 }}>
-        <div><b>{this.getLabel()}</b></div>
+        <div style={styles.label}>{this.getLabel()}</div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         {this.renderChildren()}
         <div style={{ marginTop: 10 }}>
-          <RaisedButton label="Add" onTouchTap={() => this.addItem()}/>
+          <RaisedButton label={this.props.addLabel} onTouchTap={() => this.addItem()}/>
         </div>
       </div>
     );
   }
 }
 
-//MRF.Array = MaterialArray;
 MRF.Form.defaultProps.arrayComponent = MaterialArray;
+MRF.ArrayComponent = MaterialArray;

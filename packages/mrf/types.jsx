@@ -1,8 +1,12 @@
-MRF.registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
-  MRF.Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
+import { React } from 'meteor/npmdeps';
+
+var Attributes = {};
+
+const registerType = function ({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
+  Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
 };
 
-MRF.getFieldTypeName = function(fieldSchema) {
+const getFieldTypeName = function (fieldSchema) {
   var typeName = null;
   if (fieldSchema.mrf && fieldSchema.mrf.type) {
     typeName = fieldSchema.mrf.type;
@@ -23,13 +27,17 @@ MRF.getFieldTypeName = function(fieldSchema) {
   return typeName;
 };
 
-MRF.getFieldType = function(fieldSchema) {
-  var typeName = MRF.getFieldTypeName(fieldSchema);
-  return MRF.Attributes[typeName];
+const getFieldType = function (fieldSchema, attributes) {
+  var typeName = getFieldTypeName(fieldSchema);
+  return Attributes[typeName];
 };
 
-MRF.getFieldComponent = function(fieldSchema, fieldName) {
-  var type = MRF.getFieldType(fieldSchema);
+const getFieldComponent = function (fieldSchema, fieldName) {
+  if (!fieldSchema) {
+    throw new Error(`There is no field "${fieldName}" in the schema.`);
+  }
+
+  var type = getFieldType(fieldSchema, fieldName);
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`);
   }
@@ -55,6 +63,7 @@ MRF.getFieldComponent = function(fieldSchema, fieldName) {
     var optionsDefinition = _.clone(type.optionsDefinition);
     optionsDefinition.type = Match.Optional(String);
     optionsDefinition.passProps = Match.Optional(Object);
+    optionsDefinition.omit = Match.Optional(Boolean);
     var options = fieldSchema.mrf || {};
     try {
       check(options, optionsDefinition);
@@ -64,4 +73,12 @@ MRF.getFieldComponent = function(fieldSchema, fieldName) {
   }
 
   return type.component;
+};
+
+export {
+  registerType,
+  getFieldTypeName,
+  getFieldType,
+  getFieldComponent,
+  Attributes,
 };

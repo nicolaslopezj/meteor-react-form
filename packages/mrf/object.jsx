@@ -1,3 +1,5 @@
+import { React } from 'meteor/npmdeps';
+
 const propTypes = {
   /**
    * Value of the object.
@@ -30,7 +32,7 @@ const propTypes = {
   onChange: React.PropTypes.func,
 };
 
-class ObjectComponent extends React.Component {
+export default class ObjectComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,8 +50,8 @@ class ObjectComponent extends React.Component {
     return this.getSchema().label(this.props.fieldName);
   }
 
-  renderChildren() {
-    return React.Children.map(this.props.children, (child) => {
+  renderChildren(children) {
+    return React.Children.map(children, (child) => {
       var fieldName = child.props.fieldName;
       var options = {};
       if (child.type.recieveMRFData) {
@@ -60,8 +62,9 @@ class ObjectComponent extends React.Component {
           onChange: this.props.onChange,
           errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${fieldName}`] : undefined,
           errorMessages: this.props.errorMessages,
+          form: this.props.form,
         };
-      } else {
+      } else if (child.props) {
         options = {
           children: this.renderChildren(child.props.children),
         };
@@ -76,7 +79,7 @@ class ObjectComponent extends React.Component {
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
         <div><b>{this.getLabel()}</b></div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren()}
+        {this.renderChildren(this.props.children)}
       </div>
     );
   }
@@ -84,6 +87,3 @@ class ObjectComponent extends React.Component {
 
 ObjectComponent.propTypes = propTypes;
 ObjectComponent.recieveMRFData = true;
-
-MRF.ObjectComponent = ObjectComponent;
-MRF.Object = ObjectComponent;

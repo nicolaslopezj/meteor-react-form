@@ -1,0 +1,11 @@
+import './components/array.jsx';
+import './components/checkbox.jsx';
+import './components/date-picker.jsx';
+import './components/multiple-checkbox.jsx';
+import './components/object.jsx';
+import './components/select-with-method.jsx';
+import './components/text-field.jsx';
+import './components/textarea.jsx';
+import './components/image.jsx';
+import './components/file.jsx';
+import './components/select.jsx';
