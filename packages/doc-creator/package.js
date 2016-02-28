@@ -11,7 +11,7 @@ Package.onUse(function(api) {
     'ecmascript',
     'underscore',
     'check',
-    'nicolaslopezj:mrf',
+    'nicolaslopezj:mrf@0.3.0',
   ]);
 
   api.addFiles([

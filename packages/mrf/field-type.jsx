@@ -1,5 +1,3 @@
-import { React } from 'meteor/npmdeps';
-
 const propTypes = {
   /**
    * The current value of the field
@@ -37,22 +35,16 @@ const propTypes = {
   schema: React.PropTypes.object.isRequired,
 };
 
-export default class FieldType extends React.Component {
+class FieldType extends React.Component {
 
   constructor(props) {
     super(props);
     this.mrf = (this.props.fieldSchema && this.props.fieldSchema.mrf) || {};
     this.passProps = this.mrf.passProps || {};
-    this.registerComponent();
-  }
-
-  registerComponent() {
-    this.props.form.registerComponent({
-      field: this.props.fieldName,
-      component: this,
-    });
   }
 
 }
 
 FieldType.propTypes = propTypes;
+
+MRF.FieldType = FieldType;

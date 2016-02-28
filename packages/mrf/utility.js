@@ -1,4 +1,4 @@
-export default Utility = {
+MRF.Utility = {
   // taken from aldeed's autoform
   docToModifier: function docToModifier(doc, options) {
     var modifier = {};
@@ -24,13 +24,13 @@ export default Utility = {
     return modifier;
   },
 
-  isBasicObject: function (obj) {
+  isBasicObject: function(obj) {
     return _.isObject(obj) && Object.getPrototypeOf(obj) === Object.prototype;
   },
 
   cleanNulls: function cleanNulls(doc, isArray, keepEmptyStrings) {
     var newDoc = isArray ? [] : {};
-    _.each(doc, function (val, key) {
+    _.each(doc, function(val, key) {
       if (!_.isArray(val) && MRF.Utility.isBasicObject(val)) {
         val = cleanNulls(val, false, keepEmptyStrings); //recurse into plain objects
         if (!_.isEmpty(val)) {
@@ -55,7 +55,7 @@ export default Utility = {
     var nulls = {};
 
     // Loop through the flat doc
-    _.each(flatDoc, function (val, key) {
+    _.each(flatDoc, function(val, key) {
       // If value is undefined, null, or an empty string, report this as null so it will be unset
       if (val === null) {
         nulls[key] = '';
