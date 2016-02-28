@@ -1,3 +1,6 @@
+import { MUI, React } from 'meteor/npmdeps';
+import MRF from 'meteor/nicolaslopezj:mrf';
+
 var {
   Checkbox,
 } = MUI;

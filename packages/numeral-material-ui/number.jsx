@@ -1,69 +1,18 @@
-var {
-  TextField,
-} = MUI;
+import { React } from 'meteor/npmdeps';
+import MRF from 'meteor/nicolaslopezj:mrf';
+import NumeralFieldComponent from './numeral.jsx';
 
-MRF.Components.FormattedNumber = React.createClass({
-  propTypes: {
-    value: React.PropTypes.number,
-    label: React.PropTypes.string.isRequired,
-    errorMessage: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired,
-  },
-
-  getInitialState() {
-    return {
-      realValue: this.props.value,
-      value: this.formatValue(this.props.value),
-    };
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this.setState({
-        realValue: nextProps.value,
-        value: this.formatValue(nextProps.value),
-      });
-    }
-  },
-
+class FormattedNumberComponent extends NumeralFieldComponent {
   unformatValue(label) {
     return label === '' ? undefined : numeral().unformat(label);
-  },
+  }
 
   formatValue(real) {
     return _.isNumber(real) ? numeral(real).format('0,0') : '';
-  },
+  }
+}
 
-  onBlur(event) {
-    var value = event.target.value;
-    this.setState({
-      realValue: this.unformatValue(value),
-      value: this.formatValue(this.unformatValue(value)),
-    });
-    this.props.onChange(this.unformatValue(value));
-  },
-
-  render: function() {
-    return (
-      <div>
-        <TextField
-          ref="input"
-          fullWidth={true}
-          value={this.state.value}
-          floatingLabelText={this.props.label}
-          errorText={this.props.errorMessage}
-          onChange={(event) => this.setState({ value: event.target.value })}
-          onBlur={this.onBlur}
-          onEnterKeyDown={this.onBlur} />
-      </div>
-    );
-  },
-});
-
-MRF.registerAttribute({
-  type: 'FormattedNumber',
-  component: MRF.Components.FormattedNumber,
-  schema: {
-    type: Number,
-  },
+MRF.registerType({
+  type: 'formatted-number',
+  component: FormattedNumberComponent,
 });

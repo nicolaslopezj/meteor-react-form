@@ -1,3 +1,8 @@
+import { React } from 'meteor/npmdeps';
+import ArrayComponent from './array.jsx';
+import ObjectComponent from './object.jsx';
+import DotObject from './dot.js';
+
 const propTypes = {
   /**
    * The document that has the original values for the form.
@@ -84,11 +89,11 @@ const defaultProps = {
   filter: true,
   replaceOnChange: true,
   formId: 'defaultFormId',
-  arrayComponent: MRF.Array,
-  objectComponent: MRF.Object,
+  arrayComponent: ArrayComponent,
+  objectComponent: ObjectComponent,
 };
 
-class FormComponent extends React.Component {
+export default class Form extends React.Component {
 
   constructor(props) {
     super(props);
@@ -98,6 +103,7 @@ class FormComponent extends React.Component {
       validationContext: this.props.collection.simpleSchema().newContext(),
       errorMessages: {},
     };
+    this.fields = [];
 
     this.autoSave = _.throttle(this.submit.bind(this), 500, { leading: false });
   }
@@ -110,11 +116,24 @@ class FormComponent extends React.Component {
     }
   }
 
+  registerComponent({ field, component }) {
+    this.fields.push({ field, component });
+  }
+
+  callChildFields({ method, input }) {
+    this.fields.map((field) => {
+      if (_.isFunction(field.component[method])) {
+        field.component[method](input);
+      }
+    });
+  }
+
   onCommit(error, docId) {
     this.setState({ errorMessages: {} });
     if (error) {
       this.handleError(error);
     } else {
+      this.callChildFields({ method: 'onSuccess' });
       if (_.isFunction(this.props.onSuccess)) {
         this.props.onSuccess(docId);
         this.setState({ changes: {} });
@@ -141,14 +160,14 @@ class FormComponent extends React.Component {
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
+        this.callChildFields({ method: 'onSuccess' });
         this.props.onSuccess();
       }
     }
   }
 
   handleError(error) {
-    console.log(error);
-    var context = this.props.collection.simpleSchema().namedContext(`mrf${this.props.type}`);
+    var context = this.props.collection.simpleSchema().namedContext(this.getValidationOptions().validationContext);
     var invalidKeys = context.invalidKeys();
     var errorMessages = {};
     invalidKeys.map((field) => {
@@ -180,6 +199,7 @@ class FormComponent extends React.Component {
           onChange: this.onValueChange.bind(this),
           errorMessage: this.state.errorMessages[fieldName],
           errorMessages: this.state.errorMessages,
+          form: this,
         };
       } else if (child.props) {
         options = {
@@ -237,7 +257,5 @@ class FormComponent extends React.Component {
   }
 };
 
-FormComponent.propTypes = propTypes;
-FormComponent.defaultProps = defaultProps;
-
-MRF.Form = FormComponent;
+Form.propTypes = propTypes;
+Form.defaultProps = defaultProps;

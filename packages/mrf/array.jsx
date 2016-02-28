@@ -1,4 +1,54 @@
-class ArrayComponent extends MRF.ObjectComponent {
+import { React } from 'meteor/npmdeps';
+import ObjectComponent from './object.jsx';
+
+const propTypes = {
+  /**
+   * Value of the object.
+   */
+  value: React.PropTypes.any,
+
+  /**
+   * Mongo Collection of the parent object.
+   */
+  collection: React.PropTypes.object,
+
+  /**
+   * Error message for the object, if there is one.
+   */
+  errorMessage: React.PropTypes.string,
+
+  /**
+   * Children error messages.
+   */
+  errorMessages: React.PropTypes.object,
+
+  /**
+   * Field name of the object in the parent object.
+   */
+  fieldName: React.PropTypes.string.isRequired,
+
+  /**
+   * Call this function when the value changes.
+   */
+  onChange: React.PropTypes.func,
+
+  /**
+   * The add label
+   */
+  addLabel: React.PropTypes.string,
+
+  /**
+   * The remove label
+   */
+  removeLabel: React.PropTypes.string,
+};
+
+const defaultProps = {
+  addLabel: 'Add',
+  removeLabel: 'Remove',
+};
+
+export default class ArrayComponent extends ObjectComponent {
   onValueChange(fieldName, newValue) {
     var withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '');
     var index = withoutSelf.split('.')[0];
@@ -28,29 +78,34 @@ class ArrayComponent extends MRF.ObjectComponent {
     this.props.onChange(this.props.fieldName, newArray);
   }
 
+  renderChildrenComponent(children, index) {
+    return React.Children.map(children, (child) => {
+      var fieldName = child.props.fieldName;
+      var options = {};
+      if (child.type.recieveMRFData) {
+        options = {
+          fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
+          collection: this.props.collection,
+          value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
+          onChange: this.onValueChange.bind(this),
+          errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
+          errorMessages: this.props.errorMessages,
+          form: this.props.form,
+        };
+      } else if (child.props) {
+        options = {
+          children: this.renderChildrenComponent(child.props.children, index),
+        };
+      }
+
+      return React.cloneElement(child, options);
+    });
+  }
+
   renderChildren() {
     var value = this.props.value || [];
     return value.map((item, index) => {
-      var component = React.Children.map(this.props.children, (child) => {
-        var fieldName = child.props.fieldName;
-        var options = {};
-        if (child.type.recieveMRFData) {
-          options = {
-            fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
-            collection: this.props.collection,
-            value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
-            onChange: this.onValueChange.bind(this),
-            errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
-            errorMessages: this.props.errorMessages,
-          };
-        } else {
-          options = {
-            children: this.renderChildren(child.props.children),
-          };
-        }
-
-        return React.cloneElement(child, options);
-      });
+      var component = this.renderChildrenComponent(this.props.children, index);
       return this.renderChildrenItem({ index, component });
     });
   }
@@ -61,7 +116,7 @@ class ArrayComponent extends MRF.ObjectComponent {
         {component}
         <div style={{ marginTop: 10, textAlign: 'right' }}>
           <button onClick={() => this.removeItem(index)}>
-            Remove
+            {this.props.removeLabel}
           </button>
         </div>
       </div>
@@ -76,7 +131,7 @@ class ArrayComponent extends MRF.ObjectComponent {
         {this.renderChildren()}
         <div style={{ marginTop: 10 }}>
           <button onClick={this.addItem.bind(this)}>
-            Add
+            {this.props.addLabel}
           </button>
         </div>
       </div>
@@ -84,5 +139,5 @@ class ArrayComponent extends MRF.ObjectComponent {
   }
 }
 
-MRF.ArrayComponent = ArrayComponent;
-MRF.Array = ArrayComponent;
+ArrayComponent.propTypes = propTypes;
+ArrayComponent.defaultProps = defaultProps;
