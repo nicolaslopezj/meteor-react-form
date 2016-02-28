@@ -1,5 +1,3 @@
-import { React } from 'meteor/npmdeps';
-
 const propTypes = {
   /**
    * The value of the field.
@@ -27,7 +25,7 @@ const propTypes = {
   onChange: React.PropTypes.func,
 };
 
-export default class Field extends React.Component {
+class FieldComponent extends React.Component {
 
   onChange(value) {
     this.props.onChange(this.props.fieldName, value);
@@ -57,9 +55,7 @@ export default class Field extends React.Component {
       onChange: this.onChange.bind(this),
       errorMessage: this.props.errorMessage,
       fieldSchema: this.getFieldSchema(),
-      fieldName: this.props.fieldName,
       schema: this.getSchema(),
-      form: this.props.form,
     };
   }
 
@@ -70,5 +66,7 @@ export default class Field extends React.Component {
   }
 };
 
-Field.propTypes = propTypes;
-Field.recieveMRFData = true;
+FieldComponent.propTypes = propTypes;
+FieldComponent.recieveMRFData = true;
+
+MRF.Field = FieldComponent;
