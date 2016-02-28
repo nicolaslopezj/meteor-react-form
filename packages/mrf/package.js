@@ -6,14 +6,17 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function (api) {
-  api.versionsFrom('1.3-modules-beta.8');
+Package.onUse(function(api) {
+  api.versionsFrom('1.2.1');
   api.use([
     'ecmascript',
     'underscore',
     'check',
     'aldeed:simple-schema@1.5.3',
     'aldeed:collection2@2.8.0',
+    /**
+     * This dep is temporal until #5890 is fixed.
+     */
     'npmdeps',
   ]);
 
@@ -21,12 +24,13 @@ Package.onUse(function (api) {
     'jsx',
     'aldeed:simple-schema',
     'aldeed:collection2',
+    'npmdeps',
   ]);
 
   api.mainModule('init.jsx', 'client');
 });
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
 });

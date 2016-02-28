@@ -6,25 +6,20 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function (api) {
-  api.versionsFrom('1.3-modules-beta.8');
+Package.onUse(function(api) {
+  api.versionsFrom('1.2.1');
   api.use([
     'ecmascript',
     'underscore',
     'jsx',
     'check',
     'nicolaslopezj:mrf',
-    'npmdeps',
-  ]);
-
-  api.imply([
-    'nicolaslopezj:mrf@0.3.0',
   ]);
 
   api.mainModule('main.jsx', 'client');
 });
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
 });

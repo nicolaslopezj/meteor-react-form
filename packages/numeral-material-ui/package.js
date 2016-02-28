@@ -6,20 +6,20 @@ Package.describe({
   documentation: 'README.md',
 });
 
-Package.onUse(function (api) {
+Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use([
     'ecmascript',
     'underscore',
     'check',
     'nicolaslopezj:mrf',
-    'npmdeps',
     'numeral:numeral',
   ]);
+
   api.mainModule('main.jsx', 'client');
 });
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('nicolaslopezj:mrf-percentage');
