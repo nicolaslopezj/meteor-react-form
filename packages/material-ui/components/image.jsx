@@ -1,4 +1,4 @@
-import { MUI, React } from 'meteor/npmdeps';
+import { MUI, React, ReactDOM } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 
 var {
@@ -144,7 +144,7 @@ export class ImageComponent extends MRF.FieldType {
   }
 
   openFileDialog() {
-    var fileInputDom = React.findDOMNode(this.refs.fileInput);
+    var fileInputDom = ReactDOM.findDOMNode(this.refs.fileInput);
     fileInputDom.click();
   }
 
@@ -190,18 +190,3 @@ export class ImageComponent extends MRF.FieldType {
     );
   }
 }
-
-MRF.registerType({
-  type: 'image',
-  component: ImageComponent,
-  allowedTypes: [Object],
-  description: 'Image field.',
-  optionsDefinition: {
-    upload: Function,
-    delete: Function,
-  },
-  optionsDescription: {
-    upload: 'A function that recieves ```{ file, onProgress, onReady, onError }```. ```onProgress``` input is ```progress```, a number from 0 to 1. ```onReady``` inputs are ```{ url, meta }```, ```url``` is the url of the file, ```meta``` meta is a object with whatever you want. ```onError``` input is ```message```.',
-    delete: 'A function that recieves ```{ file, onReady, onError }```. ```file``` is the information of the file (includes the meta from before). ```onReady``` is a function with no input. ```onError``` input is ```message```.',
-  },
-});
