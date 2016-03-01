@@ -5,6 +5,7 @@ var {
   Styles,
   Paper,
   CircularProgress,
+  LinearProgress,
 } = MUI;
 
 var {
@@ -15,6 +16,7 @@ const styles = {
   container: {
     marginBottom: 10,
     marginRight: 10,
+    cursor: 'pointer',
     display: 'inline-block',
   },
   image: {
@@ -38,12 +40,29 @@ const styles = {
 const propTypes = {
   base64: React.PropTypes.string,
   url: React.PropTypes.string,
+  isImage: React.PropTypes.bool,
   isUploading: React.PropTypes.bool,
   progress: React.PropTypes.number,
   onDelete: React.PropTypes.func,
+  deleteLabel: React.PropTypes.string,
+  confirmDeleteText: React.PropTypes.string,
 };
 
-export default class Component extends React.Component {
+export default class FilesPreview extends React.Component {
+
+  askDelete() {
+    if (confirm(this.props.confirmDeleteText)) {
+      this.props.onDelete();
+    }
+  }
+
+  renderLoading() {
+    return (
+      <div style={{ marginBottom: 10 }}>
+        <LinearProgress mode='determinate' value={this.props.progress * 100} />
+      </div>
+    );
+  }
 
   renderBase64() {
     return (
@@ -54,22 +73,39 @@ export default class Component extends React.Component {
     );
   }
 
-  renderPreview() {
+  renderPreviewImage() {
     return (
-      <Paper style={styles.container}>
+      <Paper style={styles.container} onClick={this.askDelete.bind(this)}>
         <img src={this.props.url} style={styles.image}/>
       </Paper>
     );
   }
 
+  renderPreview() {
+    return (
+      <div style={{ marginBottom: 10 }}>
+        <a style={{ color: Colors.blue400 }} href={this.props.url} target='_blank'>{this.props.url}</a>
+        <span style={{ color: Colors.red400, marginLeft: 5, cursor: 'pointer' }} onClick={this.props.onDelete.bind(this)}>{this.props.deleteLabel}</span>
+      </div>
+    );
+  }
+
   render() {
     if (this.props.base64) {
-      return this.renderBase64();
+      if (this.props.isImage) {
+        return this.renderBase64();
+      } else {
+        return this.renderLoading();
+      }
     } else {
-      return this.renderPreview();
+      if (this.props.isImage) {
+        return this.renderPreviewImage();
+      } else {
+        return this.renderPreview();
+      }
     }
   }
 
 }
 
-Component.propTypes = propTypes;
+FilesPreview.propTypes = propTypes;

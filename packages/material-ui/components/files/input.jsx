@@ -21,6 +21,39 @@ export default class Component extends MRF.FieldType {
     super(props);
     this.state = {};
     this.uploads = [];
+    this.toDelete = [];
+    this.limbo = [];
+
+    $(window).unload(() => {
+      this.componentWillUnmount();
+    });
+  }
+
+  onSuccess() {
+    this.toDelete.map((file) => {
+      this.mrf.delete({
+        file,
+        onReady: () => {},
+        onError: (message) => {
+          alert(message);
+        },
+      });
+    });
+    this.toDelete = [];
+    this.limbo = [];
+  }
+
+  componentWillUnmount() {
+    if (!this.limbo.length) return;
+    this.limbo.map((file) => {
+      this.mrf.delete({
+        file,
+        onReady: () => {},
+        onError: (message) => {
+          alert(message);
+        },
+      });
+    });
   }
 
   onReady(upload, file) {
@@ -31,6 +64,7 @@ export default class Component extends MRF.FieldType {
     } else {
       this.props.onChange(file);
     }
+    this.limbo.push(file);
   }
 
   startUpload(base64) {
@@ -65,6 +99,17 @@ export default class Component extends MRF.FieldType {
     });
   }
 
+  deleteFile(file) {
+    this.toDelete.push(_.clone(file));
+    if (this.mrf.multi) {
+      const index = this.props.value.indexOf(file);
+      this.props.value.splice(index, 1);
+      this.props.onChange(this.props.value);
+    } else {
+      this.props.onChange(null);
+    }
+  }
+
   renderPreviews() {
     const uploadingPreviews = this.uploads.map((upload, index) => {
       return <Preview
@@ -72,6 +117,7 @@ export default class Component extends MRF.FieldType {
         base64={upload.base64}
         isUploading={upload.isUploading}
         progress={upload.progress}
+        isImage={!!this.mrf.image}
         />
     });
 
@@ -80,6 +126,10 @@ export default class Component extends MRF.FieldType {
       return <Preview
         key={`preview-${file.url}`}
         url={file.url}
+        isImage={!!this.mrf.image}
+        deleteLabel='Delete'
+        confirmDeleteText='Do you want to delete this file?'
+        onDelete={() => this.deleteFile(file)}
         />
     });
 
@@ -92,6 +142,7 @@ export default class Component extends MRF.FieldType {
   }
 
   renderUploadButton() {
+    if (!this.mrf.multi && (this.props.value || this.uploads.length)) return;
     const props = {
       accept: this.mrf.image ? 'image/*' : '',
       label: this.mrf.image ? 'Upload image' : 'Upload file',
