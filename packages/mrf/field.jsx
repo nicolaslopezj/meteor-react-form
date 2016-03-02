@@ -25,6 +25,15 @@ const propTypes = {
    * Call this function when the value changes.
    */
   onChange: React.PropTypes.func,
+
+  /**
+   * Should show label
+   */
+  showLabel: React.PropTypes.bool,
+};
+
+const defaultProps = {
+  showLabel: true,
 };
 
 export default class Field extends React.Component {
@@ -53,7 +62,7 @@ export default class Field extends React.Component {
   getChildProps() {
     return {
       value: this.props.value,
-      label: this.getLabel(),
+      label: this.props.showLabel ? this.getLabel() : null,
       onChange: this.onChange.bind(this),
       errorMessage: this.props.errorMessage,
       fieldSchema: this.getFieldSchema(),
@@ -71,4 +80,5 @@ export default class Field extends React.Component {
 };
 
 Field.propTypes = propTypes;
+Field.defaultProps = defaultProps;
 Field.recieveMRFData = true;

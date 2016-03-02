@@ -9,7 +9,7 @@ const propTypes = {
   /**
    * Field label
    */
-  label: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string,
 
   /**
    * The error message if there is a error
