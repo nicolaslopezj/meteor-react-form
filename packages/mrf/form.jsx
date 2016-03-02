@@ -161,7 +161,9 @@ export default class Form extends React.Component {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
         this.callChildFields({ method: 'onSuccess' });
-        this.props.onSuccess();
+        if (_.isFunction(this.props.onSuccess)) {
+          this.props.onSuccess();
+        }
       }
     }
   }
