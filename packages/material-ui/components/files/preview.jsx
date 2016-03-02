@@ -91,7 +91,7 @@ export default class FilesPreview extends React.Component {
   }
 
   render() {
-    if (this.props.base64) {
+    if (this.props.isUploading) {
       if (this.props.isImage) {
         return this.renderBase64();
       } else {

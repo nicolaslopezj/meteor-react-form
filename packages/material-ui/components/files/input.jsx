@@ -67,9 +67,10 @@ export default class Component extends MRF.FieldType {
     this.limbo.push(file);
   }
 
-  startUpload(base64) {
+  startUpload(file, base64) {
     var upload = {
       key: _.uniqueId('uploadComponent'),
+      file,
       base64,
       isUploading: true,
     };
@@ -77,7 +78,7 @@ export default class Component extends MRF.FieldType {
     this.forceUpdate();
 
     this.mrf.upload({
-      base64,
+      file,
       onProgress: (progress) => {
         upload.progress = progress;
         this.forceUpdate();
@@ -115,9 +116,11 @@ export default class Component extends MRF.FieldType {
       return <Preview
         key={upload.key}
         base64={upload.base64}
+        file={upload.file}
         isUploading={upload.isUploading}
         progress={upload.progress}
         isImage={!!this.mrf.image}
+        onDelete={() => this.deleteFile(file)}
         />
     });
 
@@ -148,6 +151,7 @@ export default class Component extends MRF.FieldType {
       label: this.mrf.image ? 'Upload image' : 'Upload file',
       multi: !!this.mrf.multi,
       onUpload: this.startUpload.bind(this),
+      passBase64: !!this.mrf.image,
     };
     return <UploadButton {...props} />;
   }

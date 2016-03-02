@@ -15,12 +15,14 @@ const propTypes = {
   label: React.PropTypes.string,
   multi: React.PropTypes.bool,
   onUpload: React.PropTypes.func.isRequired,
+  passBase64: React.PropTypes.bool,
 };
 
 const defaultProps = {
   label: 'Upload image',
   multi: false,
-  accept: 'image/*',
+  accept: null,
+  passBase64: false,
 };
 
 export default class Component extends React.Component {
@@ -33,12 +35,17 @@ export default class Component extends React.Component {
   handleFile(event) {
     _.keys(event.target.files).map((index) => {
       const file = event.target.files[index];
-      const reader = new FileReader();
-      reader.onload = (upload) => {
-        const base64 = upload.target.result;
-        this.props.onUpload(base64);
-      };
-      reader.readAsDataURL(file);
+
+      if (this.props.passBase64) {
+        const reader = new FileReader();
+        reader.onload = (upload) => {
+          const base64 = upload.target.result;
+          this.props.onUpload(file, base64);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.props.onUpload(file);
+      }
     });
   }
 
