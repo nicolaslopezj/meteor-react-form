@@ -1,9 +1,9 @@
-import { React } from 'meteor/npmdeps';
+import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
 
-import {
+var {
   TextField,
-}  from 'material-ui';
+} = MUI;
 
 export default class NComponent extends MRF.FieldType {
   constructor(props) {
@@ -38,7 +38,7 @@ export default class NComponent extends MRF.FieldType {
     return (
       <div>
         <TextField
-          ref="input"
+          ref='input'
           fullWidth={true}
           value={this.state.value}
           floatingLabelText={this.props.label}
