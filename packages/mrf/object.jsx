@@ -7,9 +7,9 @@ const propTypes = {
   value: React.PropTypes.any,
 
   /**
-   * Mongo Collection of the parent object.
+   * The simple schema
    */
-  collection: React.PropTypes.object,
+  schema: React.PropTypes.object,
 
   /**
    * Error message for the object, if there is one.
@@ -52,7 +52,7 @@ export default class ObjectComponent extends React.Component {
   }
 
   getSchema() {
-    return this.props.collection.simpleSchema();
+    return this.props.schema;
   }
 
   getFieldSchema() {
@@ -70,7 +70,7 @@ export default class ObjectComponent extends React.Component {
       if (child.type.recieveMRFData) {
         options = {
           fieldName: `${this.props.fieldName}.${fieldName}`,
-          collection: this.props.collection,
+          schema: this.getSchema(),
           value: this.props.value ? this.props.value[fieldName] : undefined,
           onChange: this.props.onChange,
           errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${fieldName}`] : undefined,

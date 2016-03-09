@@ -7,9 +7,9 @@ const propTypes = {
   value: React.PropTypes.any,
 
   /**
-   * Mongo Collection.
+   * The simple schema
    */
-  collection: React.PropTypes.object,
+  schema: React.PropTypes.object,
 
   /**
    * Error message if there is a error.
@@ -55,7 +55,7 @@ export default class Field extends React.Component {
   }
 
   getSchema() {
-    return this.props.collection.simpleSchema();
+    return this.props.schema;
   }
 
   getFieldSchema() {

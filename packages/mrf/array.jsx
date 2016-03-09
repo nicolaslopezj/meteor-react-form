@@ -8,9 +8,9 @@ const propTypes = {
   value: React.PropTypes.any,
 
   /**
-   * Mongo Collection of the parent object.
+   * The simple schema
    */
-  collection: React.PropTypes.object,
+  schema: React.PropTypes.object,
 
   /**
    * Error message for the object, if there is one.
@@ -96,7 +96,7 @@ export default class ArrayComponent extends ObjectComponent {
       if (child.type.recieveMRFData) {
         options = {
           fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
-          collection: this.props.collection,
+          schema: this.getSchema(),
           value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
           onChange: this.onValueChange.bind(this),
           errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,

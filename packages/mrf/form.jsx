@@ -16,6 +16,11 @@ const propTypes = {
   collection: React.PropTypes.object,
 
   /**
+   * The simple schema for the form.
+   */
+  schema: React.PropTypes.object,
+
+  /**
    * The SimpleSchema for the form.
    */
   schema: React.PropTypes.object,
@@ -23,7 +28,7 @@ const propTypes = {
   /**
    * The type of the form. insert or update.
    */
-  type: React.PropTypes.string.isRequired,
+  type: React.PropTypes.oneOf(['insert', 'update', 'function']).isRequired,
 
   /**
    * Set to true to enable automatic form submission for a type="update" form. Whenever the form change event is emitted, the change will be automatically saved to the database.
@@ -113,7 +118,7 @@ export default class Form extends React.Component {
     this.state = {
       doc: _.clone(this.props.doc) || {},
       changes: {},
-      validationContext: this.props.collection.simpleSchema().newContext(),
+      validationContext: this.getSchema().newContext(),
       errorMessages: {},
     };
     this.fields = [];
@@ -126,6 +131,16 @@ export default class Form extends React.Component {
       if (!_.isEqual(nextProps.doc, this.state.doc)) {
         this.setState({ doc: _.clone(nextProps.doc) || {}, changes: {} });
       }
+    }
+  }
+
+  getSchema() {
+    if (this.props.schema) {
+      return this.props.schema;
+    } else if (this.props.collection) {
+      return this.props.collection.simpleSchema();
+    } else {
+      throw new Error('no schema was specified.');
     }
   }
 
@@ -144,7 +159,7 @@ export default class Form extends React.Component {
   onCommit(error, docId) {
     this.setState({ errorMessages: {} });
     if (error) {
-      this.handleError(error);
+      this.handleError();
       if (this.props.logErrors) {
         console.log(`[form-${this.props.formId}-error]`, error);
       }
@@ -182,11 +197,24 @@ export default class Form extends React.Component {
           this.props.onSuccess();
         }
       }
+    } else if (this.props.type == 'function') {
+      const doc = DotObject.object(DotObject.dot(data));
+      const isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc);
+      if (isValid) {
+        var success = this.props.onSubmit(doc);
+        if (success === false) {
+          this.onCommit('onSubmit error');
+        } else {
+          this.onCommit();
+        }
+      } else {
+        this.onCommit('Validation error');
+      }
     }
   }
 
-  handleError(error) {
-    var context = this.props.collection.simpleSchema().namedContext(this.getValidationOptions().validationContext);
+  handleError() {
+    var context = this.getSchema().namedContext(this.getValidationOptions().validationContext);
     var invalidKeys = context.invalidKeys();
     var errorMessages = {};
     invalidKeys.map((field) => {
@@ -217,7 +245,7 @@ export default class Form extends React.Component {
       if (child.type && child.type.recieveMRFData) {
         var fieldName = child.props.fieldName;
         options = {
-          collection: this.props.collection,
+          schema: this.getSchema(),
           value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
           onChange: this.onValueChange.bind(this),
           errorMessage: this.state.errorMessages[fieldName],
@@ -235,7 +263,7 @@ export default class Form extends React.Component {
   }
 
   generateInputsForKeys(keys, parent = '') {
-    var schema = this.props.collection.simpleSchema();
+    var schema = this.getSchema();
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
@@ -267,7 +295,7 @@ export default class Form extends React.Component {
   }
 
   generateChildren() {
-    var schema = this.props.collection.simpleSchema();
+    var schema = this.getSchema();
     return this.generateInputsForKeys(schema._firstLevelSchemaKeys);
   }
 
