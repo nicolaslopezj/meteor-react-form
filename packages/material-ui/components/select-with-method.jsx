@@ -57,7 +57,9 @@ class SelectWithMethodComponent extends MRF.FieldType {
       var connection = this.mrf.connection || Meteor;
       var labelsMethod = this.mrf.multi ? missingLabels : missingLabels[0];
       connection.call(labelMethodName, labelsMethod, (error, response) => {
-        if (!error) {
+        if (error) {
+          console.log(`[select-with-method] Recieved error from "${labelMethodName}"`, error);
+        } else {
 
           if (this.mrf.multi) {
             missingLabels.map((value, index) => {
@@ -97,16 +99,19 @@ class SelectWithMethodComponent extends MRF.FieldType {
     var methodName = this.props.fieldSchema.mrf.methodName;
     var connection = this.props.fieldSchema.mrf.connection || Meteor;
     connection.call(methodName, text, (error, response) => {
-      response = response || [];
-      this.setState({ response, isCalling: false });
-      var dataSource = response.map((item) => {
-        return {
-          text: item.value,
-          value: <MenuItem primaryText={item.label} />,
-        };
-      });
-
-      this.setState({ dataSource });
+      if (error) {
+        console.log(`[select-with-method] Recieved error from "${methodName}"`, error);
+      } else {
+        response = response || [];
+        this.setState({ response, isCalling: false });
+        var dataSource = response.map((item) => {
+          return {
+            text: item.value,
+            value: <MenuItem primaryText={item.label} />,
+          };
+        });
+        this.setState({ dataSource });
+      }
     });
   }
 
