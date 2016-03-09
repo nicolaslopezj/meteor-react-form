@@ -30,10 +30,16 @@ const propTypes = {
    * Should show label
    */
   showLabel: React.PropTypes.bool,
+
+  /**
+   * Use hint instead of label
+   */
+  useHint: React.PropTypes.bool,
 };
 
 const defaultProps = {
   showLabel: true,
+  useHint: false,
 };
 
 export default class Field extends React.Component {
@@ -63,6 +69,7 @@ export default class Field extends React.Component {
     return {
       value: this.props.value,
       label: this.props.showLabel ? this.getLabel() : null,
+      useHint: this.props.useHint,
       onChange: this.onChange.bind(this),
       errorMessage: this.props.errorMessage,
       fieldSchema: this.getFieldSchema(),

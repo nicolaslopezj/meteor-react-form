@@ -35,6 +35,11 @@ const propTypes = {
    * The schema for the object
    */
   schema: React.PropTypes.object.isRequired,
+
+  /**
+   * Use hint instead of label
+   */
+  useHint: React.PropTypes.bool,
 };
 
 export default class FieldType extends React.Component {

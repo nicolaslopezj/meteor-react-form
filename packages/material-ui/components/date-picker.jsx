@@ -9,10 +9,12 @@ class DatePickerComponent extends MRF.FieldType {
   render() {
     return (
       <DatePicker
-        ref="input"
+        ref='input'
         fullWidth={true}
         value={this.props.value}
         floatingLabelText={this.props.label}
+        floatingLabelText={this.props.useHint ? null : this.props.label}
+        hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
         onChange={(nothing, date) => this.props.onChange(date)}
         {...this.passProps} />
