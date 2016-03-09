@@ -78,6 +78,16 @@ const propTypes = {
    * The component for the object wrapper
    */
   objectComponent: React.PropTypes.any,
+
+  /**
+   * Show errors in the console
+   */
+  logErrors: React.PropTypes.bool,
+
+  /**
+   * Commit only changes
+   */
+  commitOnlyChanges: React.PropTypes.bool,
 };
 
 const defaultProps = {
@@ -91,6 +101,8 @@ const defaultProps = {
   formId: 'defaultFormId',
   arrayComponent: ArrayComponent,
   objectComponent: ObjectComponent,
+  logErrors: false,
+  commitOnlyChanges: true,
 };
 
 export default class Form extends React.Component {
@@ -132,6 +144,9 @@ export default class Form extends React.Component {
     this.setState({ errorMessages: {} });
     if (error) {
       this.handleError(error);
+      if (this.props.logErrors) {
+        console.log(`[form-${this.props.formId}-error]`, error);
+      }
     } else {
       this.callChildFields({ method: 'onSuccess' });
       if (_.isFunction(this.props.onSuccess)) {
@@ -152,11 +167,12 @@ export default class Form extends React.Component {
   }
 
   submit() {
+    const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc;
     if (this.props.type == 'insert') {
-      var doc = DotObject.object(DotObject.dot(this.state.changes));
+      var doc = DotObject.object(DotObject.dot(data));
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
-      var modifier = MRF.Utility.docToModifier(this.state.changes, { keepArrays: this.props.keepArrays });
+      var modifier = MRF.Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
@@ -175,6 +191,9 @@ export default class Form extends React.Component {
     invalidKeys.map((field) => {
       errorMessages[field.name] = context.keyErrorMessage(field.name);
     });
+    if (this.props.logErrors) {
+      console.log(`[form-${this.props.formId}-error-messages]`, errorMessages);
+    }
     this.setState({ errorMessages });
   }
 

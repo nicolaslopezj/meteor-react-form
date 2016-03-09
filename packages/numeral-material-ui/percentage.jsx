@@ -15,4 +15,11 @@ class PercentageComponent extends NumeralFieldComponent {
 MRF.registerType({
   type: 'percentage',
   component: PercentageComponent,
+  allowedTypes: [Number],
+  optionsDefinition: {
+    fullNumber: Match.Optional(Boolean),
+  },
+  optionsDescription: {
+    fullNumber: 'True to save values in numbers from 0 to 100',
+  },
 });

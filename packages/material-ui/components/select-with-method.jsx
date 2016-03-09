@@ -97,6 +97,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
     var methodName = this.props.fieldSchema.mrf.methodName;
     var connection = this.props.fieldSchema.mrf.connection || Meteor;
     connection.call(methodName, text, (error, response) => {
+      response = response || [];
       this.setState({ response, isCalling: false });
       var dataSource = response.map((item) => {
         return {
@@ -120,11 +121,13 @@ class SelectWithMethodComponent extends MRF.FieldType {
       if (_.contains(this.props.value || [], selected.value)) return;
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
     } else {
-      this.props.onChange(selected.value);
+      this.props.onChange(selected ? selected.value : null);
     }
 
-    this.state.knownLabels[selected.value] = selected.label;
-    this.setState({ knownLabels: this.state.knownLabels });
+    if (selected) {
+      this.state.knownLabels[selected.value] = selected.label;
+      this.setState({ knownLabels: this.state.knownLabels });
+    }
   }
 
   removeItem(value) {
@@ -132,7 +135,8 @@ class SelectWithMethodComponent extends MRF.FieldType {
   }
 
   onBlur() {
-    // this is not been called
+    // This is not been called
+    console.log('now its working');
     if (!this.props.value) {
       this.refs.input.setState({ searchText: '' });
     }
@@ -140,7 +144,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
 
   renderItems() {
     return (_.isArray(this.props.value) ? this.props.value : []).map((value, index) => {
-      var label = this.state.knownLabels[value] || value;
+      var label = this.state.knownLabels[value] || 'Loading...';
       return (
         <div onClick={() => this.removeItem(value)} key={value} style={{ background: Colors.grey300, padding: '5px 10px', display: 'inline-block', borderRadius: 20, marginRight: 5, marginTop: 3, marginBottom: 2, cursor: 'pointer' }}>
           {label}
@@ -153,15 +157,16 @@ class SelectWithMethodComponent extends MRF.FieldType {
     return (
       <div>
         <AutoComplete
-          ref="input"
+          ref='input'
           fullWidth={true}
-          searchText=""
+          searchText=''
           dataSource={this.state.dataSource}
           filter={(searchText, key) => true}
           onUpdateInput={this.onUpdateText.bind(this)}
           floatingLabelText={this.props.label}
           onNewRequest={this.onItemSelected.bind(this)}
           errorText={this.props.errorMessage}
+          onBlur={this.onBlur.bind(this)}
           {...this.passProps} />
         <div>
           {this.renderItems()}

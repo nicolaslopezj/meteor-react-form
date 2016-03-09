@@ -9,7 +9,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use([
-    'ecmascript',
+    'jsx',
     'underscore',
     'check',
     'aldeed:simple-schema@1.5.3',
@@ -21,7 +21,6 @@ Package.onUse(function(api) {
   ]);
 
   api.imply([
-    'jsx',
     'aldeed:simple-schema',
     'aldeed:collection2',
     'npmdeps',
