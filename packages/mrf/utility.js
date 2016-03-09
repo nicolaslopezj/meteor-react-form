@@ -1,5 +1,5 @@
 export default Utility = {
-  // taken from aldeed's autoform
+  // Taken from aldeed's autoform
   docToModifier: function docToModifier(doc, options) {
     var modifier = {};
     var mDoc;
@@ -10,8 +10,8 @@ export default Utility = {
     flatDoc = mDoc.getFlatObject({
       keepArrays: !!options.keepArrays,
     });
-    nulls = MRF.Utility.reportNulls(flatDoc, !!options.keepEmptyStrings);
-    flatDoc = MRF.Utility.cleanNulls(flatDoc, false, !!options.keepEmptyStrings);
+    nulls = Utility.reportNulls(flatDoc, !!options.keepEmptyStrings);
+    flatDoc = Utility.cleanNulls(flatDoc, false, !!options.keepEmptyStrings);
 
     if (!_.isEmpty(flatDoc)) {
       modifier.$set = flatDoc;
@@ -24,24 +24,24 @@ export default Utility = {
     return modifier;
   },
 
-  isBasicObject: function (obj) {
+  isBasicObject: function(obj) {
     return _.isObject(obj) && Object.getPrototypeOf(obj) === Object.prototype;
   },
 
   cleanNulls: function cleanNulls(doc, isArray, keepEmptyStrings) {
     var newDoc = isArray ? [] : {};
-    _.each(doc, function (val, key) {
-      if (!_.isArray(val) && MRF.Utility.isBasicObject(val)) {
-        val = cleanNulls(val, false, keepEmptyStrings); //recurse into plain objects
+    _.each(doc, function(val, key) {
+      if (!_.isArray(val) && Utility.isBasicObject(val)) {
+        val = cleanNulls(val, false, keepEmptyStrings); //Recurse into plain objects
         if (!_.isEmpty(val)) {
           newDoc[key] = val;
         }
       } else if (_.isArray(val)) {
-        val = cleanNulls(val, true, keepEmptyStrings); //recurse into non-typed arrays
+        val = cleanNulls(val, true, keepEmptyStrings); //Recurse into non-typed arrays
         if (!_.isEmpty(val)) {
           newDoc[key] = val;
         }
-      } else if (!MRF.Utility.isNullUndefinedOrEmptyString(val)) {
+      } else if (!Utility.isNullUndefinedOrEmptyString(val)) {
         newDoc[key] = val;
       } else if (keepEmptyStrings && typeof val === 'string' && val.length === 0) {
         newDoc[key] = val;
@@ -55,7 +55,7 @@ export default Utility = {
     var nulls = {};
 
     // Loop through the flat doc
-    _.each(flatDoc, function (val, key) {
+    _.each(flatDoc, function(val, key) {
       // If value is undefined, null, or an empty string, report this as null so it will be unset
       if (val === null) {
         nulls[key] = '';
@@ -66,7 +66,7 @@ export default Utility = {
       }
 
       // If value is an array in which all the values recursively are undefined, null, or an empty string, report this as null so it will be unset
-      else if (_.isArray(val) && MRF.Utility.cleanNulls(val, true, keepEmptyStrings).length === 0) {
+      else if (_.isArray(val) && Utility.cleanNulls(val, true, keepEmptyStrings).length === 0) {
         nulls[key] = '';
       }
     });

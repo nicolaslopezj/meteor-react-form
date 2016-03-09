@@ -30,6 +30,14 @@ const propTypes = {
    * Call this function when the value changes.
    */
   onChange: React.PropTypes.func,
+  /**
+   * Show the container label
+   */
+  showLabel: React.PropTypes.bool,
+};
+
+const defaultProps = {
+  showLabel: true,
 };
 
 export default class ObjectComponent extends React.Component {
@@ -47,7 +55,7 @@ export default class ObjectComponent extends React.Component {
   }
 
   getLabel() {
-    return this.getSchema().label(this.props.fieldName);
+    return this.props.showLabel ? this.getSchema().label(this.props.fieldName) : '';
   }
 
   renderChildren(children) {
@@ -86,4 +94,5 @@ export default class ObjectComponent extends React.Component {
 }
 
 ObjectComponent.propTypes = propTypes;
+ObjectComponent.defaultProps = defaultProps;
 ObjectComponent.recieveMRFData = true;

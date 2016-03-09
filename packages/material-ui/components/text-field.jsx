@@ -10,11 +10,12 @@ class TextFieldComponent extends MRF.FieldType {
     var type = this.mrf.type || this.type;
     return (
       <TextField
-        ref="input"
+        ref='input'
         fullWidth={true}
         value={this.props.value}
         type={type}
-        floatingLabelText={this.props.label}
+        floatingLabelText={this.props.useHint ? null : this.props.label}
+        hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
         onChange={(event) => this.props.onChange(event.target.value)}
         {...this.passProps} />

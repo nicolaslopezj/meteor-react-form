@@ -41,11 +41,17 @@ const propTypes = {
    * The remove label
    */
   removeLabel: React.PropTypes.string,
+
+  /**
+   * Show the container label
+   */
+  showLabel: React.PropTypes.bool,
 };
 
 const defaultProps = {
   addLabel: 'Add',
   removeLabel: 'Remove',
+  showLabel: true,
 };
 
 export default class ArrayComponent extends ObjectComponent {

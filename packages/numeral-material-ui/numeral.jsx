@@ -30,8 +30,9 @@ export default class NComponent extends MRF.FieldType {
   }
 
   onBlur(event) {
-    var value = event.target.value;
-    this.props.onChange(this.unformatValue(value));
+    const value = event.target.value;
+    const real = this.unformatValue(value);
+    this.props.onChange(real);
   }
 
   render() {

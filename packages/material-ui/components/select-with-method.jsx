@@ -163,7 +163,8 @@ class SelectWithMethodComponent extends MRF.FieldType {
           dataSource={this.state.dataSource}
           filter={(searchText, key) => true}
           onUpdateInput={this.onUpdateText.bind(this)}
-          floatingLabelText={this.props.label}
+          floatingLabelText={this.props.useHint ? null : this.props.label}
+          hintText={this.props.useHint ? this.props.label : null}
           onNewRequest={this.onItemSelected.bind(this)}
           errorText={this.props.errorMessage}
           onBlur={this.onBlur.bind(this)}

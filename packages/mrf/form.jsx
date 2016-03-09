@@ -2,6 +2,7 @@ import { React } from 'meteor/npmdeps';
 import ArrayComponent from './array.jsx';
 import ObjectComponent from './object.jsx';
 import DotObject from './dot.js';
+import Utility from './utility.js';
 
 const propTypes = {
   /**
@@ -172,7 +173,7 @@ export default class Form extends React.Component {
       var doc = DotObject.object(DotObject.dot(data));
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
-      var modifier = MRF.Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
+      var modifier = Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
@@ -198,6 +199,7 @@ export default class Form extends React.Component {
   }
 
   onValueChange(fieldName, newValue) {
+    newValue = typeof newValue === 'undefined' ? null : newValue;
     DotObject.del(fieldName, this.state.doc);
     var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val;
     DotObject.del(fieldName, this.state.changes);
