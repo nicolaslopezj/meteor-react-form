@@ -20,10 +20,20 @@ class MaterialArray extends MRF.ArrayComponent {
       <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
         {component}
         <div style={{ marginTop: 10, textAlign: 'right' }}>
-          <RaisedButton label={this.props.removeLabel} onTouchTap={() => this.removeItem(index)}/>
+          {this.renderRemoveButton(index)}
         </div>
       </Paper>
     );
+  }
+
+  renderRemoveButton(index) {
+    if (this.props.disabled) return;
+    return <RaisedButton label={this.props.removeLabel} onTouchTap={() => this.removeItem(index)}/>
+  }
+
+  renderAddButton() {
+    if (this.props.disabled) return;
+    return <RaisedButton label={this.props.addLabel} onTouchTap={() => this.addItem()}/>;
   }
 
   render() {
@@ -33,7 +43,7 @@ class MaterialArray extends MRF.ArrayComponent {
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         {this.renderChildren()}
         <div style={{ marginTop: 10 }}>
-          <RaisedButton label={this.props.addLabel} onTouchTap={() => this.addItem()}/>
+          {this.renderAddButton()}
         </div>
       </div>
     );

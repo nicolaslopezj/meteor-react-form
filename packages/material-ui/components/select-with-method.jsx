@@ -168,6 +168,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
           onNewRequest={this.onItemSelected.bind(this)}
           errorText={this.props.errorMessage}
           onBlur={this.onBlur.bind(this)}
+          disabled={this.props.disabled}
           {...this.passProps} />
         <div>
           {this.renderItems()}

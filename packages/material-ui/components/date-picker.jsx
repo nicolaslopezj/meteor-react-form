@@ -15,6 +15,7 @@ class DatePickerComponent extends MRF.FieldType {
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
+        disabled={this.props.disabled}
         onChange={(nothing, date) => this.props.onChange(date)}
         {...this.passProps} />
     );

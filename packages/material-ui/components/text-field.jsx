@@ -17,6 +17,7 @@ class TextFieldComponent extends MRF.FieldType {
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
+        disabled={this.props.disabled}
         onChange={(event) => this.props.onChange(event.target.value)}
         {...this.passProps} />
     );

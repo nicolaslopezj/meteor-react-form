@@ -35,11 +35,17 @@ const propTypes = {
    * Use hint instead of label
    */
   useHint: React.PropTypes.bool,
+
+  /**
+   * The field should be read only mode
+   */
+  disabled: React.PropTypes.bool,
 };
 
 const defaultProps = {
   showLabel: true,
   useHint: false,
+  disabled: false,
 };
 
 export default class Field extends React.Component {
@@ -76,6 +82,7 @@ export default class Field extends React.Component {
       fieldName: this.props.fieldName,
       schema: this.getSchema(),
       form: this.props.form,
+      disabled: this.props.disabled,
     };
   }
 

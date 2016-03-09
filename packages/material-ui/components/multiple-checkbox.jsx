@@ -26,6 +26,7 @@ class MultipleCheckboxComponent extends MRF.FieldType {
             checked={_.contains(currentVal, option.value)}
             onCheck={() => this.onCheck(option.value, currentVal)}
             label={option.label}
+            disabled={this.props.disabled}
             {...this.passProps}
           />
         </div>

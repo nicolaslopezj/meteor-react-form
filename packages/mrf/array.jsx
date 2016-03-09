@@ -46,6 +46,11 @@ const propTypes = {
    * Show the container label
    */
   showLabel: React.PropTypes.bool,
+
+  /**
+   * The field should be read only mode
+   */
+  disabled: React.PropTypes.bool,
 };
 
 const defaultProps = {

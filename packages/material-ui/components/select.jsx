@@ -30,6 +30,7 @@ class SelectComponent extends MRF.FieldType {
           value={this.props.value}
           onChange={(event, index, value) => this.props.onChange(value)}
           fullWidth={true}
+          disabled={this.props.disabled}
           {...this.passProps}>
           {this.renderItems()}
         </SelectField>

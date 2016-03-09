@@ -45,6 +45,7 @@ export default class NComponent extends MRF.FieldType {
           floatingLabelText={this.props.useHint ? null : this.props.label}
           hintText={this.props.useHint ? this.props.label : null}
           errorText={this.props.errorMessage}
+          disabled={this.props.disabled}
           onChange={(event) => this.setState({ value: event.target.value })}
           onBlur={this.onBlur.bind(this)}
           onEnterKeyDown={this.onBlur.bind(this)} />
