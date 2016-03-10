@@ -6,6 +6,7 @@ var {
 } = MUI;
 
 class DatePickerComponent extends MRF.FieldType {
+
   render() {
     return (
       <DatePicker
@@ -16,7 +17,7 @@ class DatePickerComponent extends MRF.FieldType {
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
         disabled={this.props.disabled}
-        onChange={(nothing, date) => this.props.onChange(date)}
+        onChange={(_, date) => this.props.onChange(date)}
         {...this.passProps} />
     );
   }

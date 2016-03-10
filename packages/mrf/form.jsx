@@ -185,7 +185,8 @@ export default class Form extends React.Component {
   submit() {
     const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc;
     if (this.props.type == 'insert') {
-      var doc = DotObject.object(DotObject.dot(data));
+      const dot = DotObject.dot(data);
+      const doc = DotObject.object(dot);
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
       var modifier = Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
