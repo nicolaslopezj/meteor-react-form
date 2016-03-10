@@ -67,7 +67,10 @@ export default class Field extends React.Component {
   }
 
   getComponent() {
-    var component = MRF.getFieldComponent(this.getFieldSchema(), this.props.fieldName);
+    var component = MRF.getFieldComponent({
+      fieldName: this.props.fieldName,
+      schema: this.getSchema(),
+    });
     return component && React.createElement(component, this.getChildProps());
   }
 

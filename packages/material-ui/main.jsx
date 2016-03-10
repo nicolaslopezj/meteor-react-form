@@ -5,6 +5,7 @@ import './components/multiple-checkbox.jsx';
 import './components/object.jsx';
 import './components/select-with-method.jsx';
 import './components/text-field.jsx';
+import './components/tags.jsx';
 import './components/textarea.jsx';
 import './components/files/input.jsx';
 import './components/select.jsx';

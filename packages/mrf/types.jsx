@@ -2,11 +2,12 @@ import { React } from 'meteor/npmdeps';
 
 var Attributes = {};
 
-const registerType = function ({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
+const registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
   Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
 };
 
-const getFieldTypeName = function (fieldSchema) {
+const getFieldTypeName = function({ fieldName, schema }) {
+  const fieldSchema = schema.schema(fieldName);
   var typeName = null;
   if (fieldSchema.mrf && fieldSchema.mrf.type) {
     typeName = fieldSchema.mrf.type;
@@ -21,23 +22,35 @@ const getFieldTypeName = function (fieldSchema) {
   } else if (fieldSchema.type === Object) {
     typeName = 'object';
   } else if (fieldSchema.type === Array) {
-    typeName = 'array';
+    arrayItemFieldType = schema.schema(fieldName + '.$').type;
+    if (arrayItemFieldType === String) {
+      typeName = 'string-array';
+    } else if (arrayItemFieldType === Number) {
+      typeName = 'number-array';
+    } else if (arrayItemFieldType === Boolean) {
+      typeName = 'boolean-array';
+    } else if (arrayItemFieldType === Date) {
+      typeName = 'date-array';
+    } else {
+      typeName = 'array';
+    }
   }
 
   return typeName;
 };
 
-const getFieldType = function (fieldSchema, attributes) {
-  var typeName = getFieldTypeName(fieldSchema);
+const getFieldType = function({ fieldName, fieldSchema, schema }) {
+  var typeName = getFieldTypeName({ fieldName, fieldSchema, schema });
   return Attributes[typeName];
 };
 
-const getFieldComponent = function (fieldSchema, fieldName) {
+const getFieldComponent = function({ fieldName, schema }) {
+  const fieldSchema = schema.schema(fieldName);
   if (!fieldSchema) {
     throw new Error(`There is no field "${fieldName}" in the schema.`);
   }
 
-  var type = getFieldType(fieldSchema, fieldName);
+  var type = getFieldType({ fieldName, fieldSchema, schema });
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`);
   }

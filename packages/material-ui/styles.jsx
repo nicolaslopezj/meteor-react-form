@@ -1,12 +1,8 @@
-import { MUI, React } from 'meteor/npmdeps';
+import {MUI, React} from 'meteor/npmdeps';
 
-var {
-  Styles,
-} = MUI;
+var {Styles} = MUI;
 
-var {
-  Colors,
-} = Styles;
+var {Colors} = Styles;
 
 export default styles = {
   label: {
@@ -27,5 +23,15 @@ export default styles = {
   fieldContainer: {
     paddingTop: 10,
     paddingBottom: 10,
+  },
+  tag: {
+    background: Colors.grey300,
+    padding: '5px 10px',
+    display: 'inline-block',
+    borderRadius: 20,
+    marginRight: 5,
+    marginTop: 3,
+    marginBottom: 2,
+    cursor: 'pointer',
   },
 };

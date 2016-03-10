@@ -272,8 +272,7 @@ export default class Form extends React.Component {
     });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
-      var keySchema = schema._schema[fullKey];
-      var type = MRF.getFieldTypeName(keySchema);
+      var type = MRF.getFieldTypeName({ fieldName: fullKey, schema });
       if (type == 'array') {
         var _keys = schema.objectKeys(`${fullKey}.$`);
         return (

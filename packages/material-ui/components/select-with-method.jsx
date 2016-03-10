@@ -1,5 +1,6 @@
 import { MUI, React } from 'meteor/npmdeps';
 import MRF from 'meteor/nicolaslopezj:mrf';
+import styles from '../styles.jsx';
 
 var {
   AutoComplete,
@@ -60,21 +61,21 @@ class SelectWithMethodComponent extends MRF.FieldType {
         if (error) {
           console.log(`[select-with-method] Recieved error from "${labelMethodName}"`, error);
         } else {
-
           if (this.mrf.multi) {
             missingLabels.map((value, index) => {
               knownLabels[value] = response[index];
             });
           } else {
             knownLabels[labelsMethod] = response;
+            console.log('setting to response', response);
             this.refs.input.setState({ searchText: response });
           }
-
           this.setState({ knownLabels });
         }
       });
     } else {
       if (!this.mrf.multi) {
+        console.log('setting to known label', knownLabels[values]);
         this.refs.input.setState({ searchText: knownLabels[values] });
       }
     }
@@ -82,6 +83,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
 
   updateLabel(value) {
     if (!this.mrf.multi && !value) {
+      console.log('clean on update');
       this.refs.input.setState({ searchText: '' });
       return;
     }
@@ -90,6 +92,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
   }
 
   search(text) {
+    console.log('searching with text', text);
     this.setState({ selected: null, isCalling: true });
 
     if (!this.mrf.multi) {
@@ -122,6 +125,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
   onItemSelected(item, index) {
     var selected = this.state.response[index];
     if (this.mrf.multi) {
+      console.log('clean on item selected');
       this.refs.input.setState({ searchText: '' });
       if (_.contains(this.props.value || [], selected.value)) return;
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
@@ -139,11 +143,16 @@ class SelectWithMethodComponent extends MRF.FieldType {
     this.props.onChange(_.without(this.props.value || [], value));
   }
 
+  onFocus() {
+    console.log('on focus');
+    this.setState({ open: true });
+    this.search('');
+  }
+
   onBlur() {
-    // This is not been called
-    console.log('now its working');
+    this.setState({ open: false });
     if (!this.props.value) {
-      this.refs.input.setState({ searchText: '' });
+      //This.refs.input.setState({ searchText: '' });
     }
   }
 
@@ -151,7 +160,7 @@ class SelectWithMethodComponent extends MRF.FieldType {
     return (_.isArray(this.props.value) ? this.props.value : []).map((value, index) => {
       var label = this.state.knownLabels[value] || 'Loading...';
       return (
-        <div onClick={() => this.removeItem(value)} key={value} style={{ background: Colors.grey300, padding: '5px 10px', display: 'inline-block', borderRadius: 20, marginRight: 5, marginTop: 3, marginBottom: 2, cursor: 'pointer' }}>
+        <div onClick={() => this.removeItem(value)} key={value} style={styles.tag}>
           {label}
         </div>
       );
@@ -166,13 +175,16 @@ class SelectWithMethodComponent extends MRF.FieldType {
           fullWidth={true}
           searchText=''
           dataSource={this.state.dataSource}
-          filter={(searchText, key) => true}
+          filter={AutoComplete.noFilter}
           onUpdateInput={this.onUpdateText.bind(this)}
           floatingLabelText={this.props.useHint ? null : this.props.label}
           hintText={this.props.useHint ? this.props.label : null}
           onNewRequest={this.onItemSelected.bind(this)}
           errorText={this.props.errorMessage}
+          onFocus={this.onFocus.bind(this)}
           onBlur={this.onBlur.bind(this)}
+          open={this.state.open}
+          triggerUpdateOnFocus={true}
           disabled={this.props.disabled}
           {...this.passProps} />
         <div>
