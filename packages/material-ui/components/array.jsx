@@ -14,15 +14,32 @@ const styles = {
   },
 };
 
+const propTypes = {
+  fieldName: React.PropTypes.string.isRequired,
+  addLabel: React.PropTypes.string.isRequired,
+  removeLabel: React.PropTypes.string.isRequired,
+  parentClassName: React.PropTypes.string,
+  childrenClassName: React.PropTypes.string,
+}
+
+const defaultProps = {
+  childrenClassName: '',
+  parentClassName: '',
+  addLabel: 'Add',
+  removeLabel: 'Remove',
+}
+
 class MaterialArray extends MRF.ArrayComponent {
   renderChildrenItem({ index, component }) {
     return (
-      <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
-        {component}
-        <div style={{ marginTop: 10, textAlign: 'right' }}>
-          {this.renderRemoveButton(index)}
-        </div>
-      </Paper>
+      <div className={this.props.childrenClassName} key={`${this.props.fieldName}.${index}`}>
+        <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
+          {component}
+          <div style={{ marginTop: 10, textAlign: 'right' }}>
+            {this.renderRemoveButton(index)}
+          </div>
+        </Paper>
+      </div>
     );
   }
 
@@ -41,7 +58,9 @@ class MaterialArray extends MRF.ArrayComponent {
       <div style={{ marginTop: 20 }}>
         <div style={styles.label}>{this.getLabel()}</div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren()}
+        <div className={this.props.parentClassName}>
+          {this.renderChildren()}
+        </div>
         <div style={{ marginTop: 10 }}>
           {this.renderAddButton()}
         </div>
@@ -49,6 +68,9 @@ class MaterialArray extends MRF.ArrayComponent {
     );
   }
 }
+
+MaterialArray.propTypes = propTypes;
+MaterialArray.defaultProps = defaultProps;
 
 MRF.Form.defaultProps.arrayComponent = MaterialArray;
 MRF.ArrayComponent = MaterialArray;
