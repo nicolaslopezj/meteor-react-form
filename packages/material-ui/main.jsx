@@ -9,3 +9,4 @@ import './components/tags.jsx';
 import './components/textarea.jsx';
 import './components/files/input.jsx';
 import './components/select.jsx';
+import './components/toggle.jsx';
