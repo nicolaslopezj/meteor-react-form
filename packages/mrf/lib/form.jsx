@@ -11,6 +11,11 @@ const propTypes = {
   doc: React.PropTypes.object,
 
   /**
+   * A callback that fires when the form value changes. The argument will be the value.
+   */
+  onChange: React.PropTypes.func,
+
+  /**
    * The Mongo Collection for the form.
    */
   collection: React.PropTypes.object,
@@ -21,14 +26,9 @@ const propTypes = {
   schema: React.PropTypes.object,
 
   /**
-   * The SimpleSchema for the form.
-   */
-  schema: React.PropTypes.object,
-
-  /**
    * The type of the form. insert or update.
    */
-  type: React.PropTypes.oneOf(['insert', 'update', 'function']).isRequired,
+  type: React.PropTypes.oneOf(['insert', 'update', 'function']),
 
   /**
    * Set to true to enable automatic form submission for a type="update" form. Whenever the form change event is emitted, the change will be automatically saved to the database.
@@ -118,7 +118,7 @@ export default class Form extends React.Component {
     this.state = {
       doc: _.clone(this.props.doc) || {},
       changes: {},
-      validationContext: this.getSchema().newContext(),
+      validationContext: this.getSchema() ? this.getSchema().newContext() : null,
       errorMessages: {},
     };
     this.fields = [];
@@ -140,7 +140,7 @@ export default class Form extends React.Component {
     } else if (this.props.collection) {
       return this.props.collection.simpleSchema();
     } else {
-      throw new Error('no schema was specified.');
+      //Throw new Error('no schema was specified.');
     }
   }
 
@@ -237,6 +237,10 @@ export default class Form extends React.Component {
 
     if (this.props.autoSave) {
       this.autoSave();
+    }
+
+    if (_.isFunction(this.props.onChange)) {
+      this.props.onChange(this.state.doc, this.state.changes);
     }
   }
 

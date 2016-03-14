@@ -1,4 +1,8 @@
 import { React } from 'meteor/npmdeps';
+import {
+  getFieldType,
+  getFieldComponent
+} from './types.jsx';
 
 const propTypes = {
   /**
@@ -40,6 +44,11 @@ const propTypes = {
    * The field should be read only mode
    */
   disabled: React.PropTypes.bool,
+
+  /**
+   * The type of the input
+   */
+  type: React.PropTypes.string,
 };
 
 const defaultProps = {
@@ -59,19 +68,29 @@ export default class Field extends React.Component {
   }
 
   getFieldSchema() {
-    return this.getSchema().schema(this.props.fieldName);
+    return this.getSchema() ? this.getSchema().schema(this.props.fieldName) : null;
   }
 
   getLabel() {
-    return this.getSchema().label(this.props.fieldName);
+    if (this.props.label) {
+      return this.props.label;
+    } else {
+      return this.getSchema().label(this.props.fieldName);
+    }
   }
 
   getComponent() {
-    var component = MRF.getFieldComponent({
-      fieldName: this.props.fieldName,
-      schema: this.getSchema(),
-    });
-    return component && React.createElement(component, this.getChildProps());
+    var component = null;
+    if (this.props.type) {
+      component = getFieldType(this.props.type).component;
+    } else {
+      component = getFieldComponent({
+        fieldName: this.props.fieldName,
+        schema: this.getSchema(),
+      });
+    }
+
+    return React.createElement(component, this.getChildProps());
   }
 
   getChildProps() {

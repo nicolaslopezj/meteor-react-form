@@ -1,12 +1,20 @@
 import { React } from 'meteor/npmdeps';
 
-var Attributes = {};
+export var Attributes = {};
 
-const registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
+export const registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
   Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
 };
 
-const getFieldTypeName = function({ fieldName, schema }) {
+export const getFieldType = function(typeName) {
+  const type = Attributes[typeName];
+  if (!type) {
+    throw new Error(`The is no registered field type "${type}".`);
+  }
+  return type;
+};
+
+export const getFieldTypeName = function({ fieldName, schema }) {
   const fieldSchema = schema.schema(fieldName);
   var typeName = null;
   if (fieldSchema.mrf && fieldSchema.mrf.type) {
@@ -39,18 +47,14 @@ const getFieldTypeName = function({ fieldName, schema }) {
   return typeName;
 };
 
-const getFieldType = function({ fieldName, fieldSchema, schema }) {
-  var typeName = getFieldTypeName({ fieldName, fieldSchema, schema });
-  return Attributes[typeName];
-};
-
-const getFieldComponent = function({ fieldName, schema }) {
+export const getFieldComponent = function({ fieldName, schema }) {
   const fieldSchema = schema.schema(fieldName);
   if (!fieldSchema) {
     throw new Error(`There is no field "${fieldName}" in the schema.`);
   }
 
-  var type = getFieldType({ fieldName, fieldSchema, schema });
+  const typeName = getFieldTypeName({ fieldName, fieldSchema, schema });
+  const type = getFieldType(typeName);
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`);
   }
@@ -86,12 +90,4 @@ const getFieldComponent = function({ fieldName, schema }) {
   }
 
   return type.component;
-};
-
-export {
-  registerType,
-  getFieldTypeName,
-  getFieldType,
-  getFieldComponent,
-  Attributes,
 };

@@ -29,12 +29,12 @@ const propTypes = {
   /**
    * The schema for the field
    */
-  fieldSchema: React.PropTypes.object.isRequired,
+  fieldSchema: React.PropTypes.object,
 
   /**
    * The schema for the object
    */
-  schema: React.PropTypes.object.isRequired,
+  schema: React.PropTypes.object,
 
   /**
    * Use hint instead of label

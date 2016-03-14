@@ -1,6 +1,6 @@
 Package.describe({
   name: 'nicolaslopezj:mrf',
-  version: '0.5.0-beta-1',
+  version: '0.6.0-beta-1',
   summary: 'Automatic forms creation with Simple Schema and React',
   git: 'https://github.com/nicolaslopezj/meteor-react-form',
   documentation: 'README.md',
@@ -26,6 +26,7 @@ Package.onUse(function(api) {
     'npmdeps',
   ]);
 
+  api.mainModule('init.jsx', 'server');
   api.mainModule('init.jsx', 'client');
 });
 

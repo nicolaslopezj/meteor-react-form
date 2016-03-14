@@ -1,17 +1,17 @@
 import { React } from 'meteor/npmdeps';
-import ArrayComponent from './array.jsx';
-import FieldType from './field-type.jsx';
-import Field from './field.jsx';
-import Form from './form.jsx';
-import ObjectComponent from './object.jsx';
-import Utility from './utility.js';
+import ArrayComponent from './lib/array.jsx';
+import FieldType from './lib/field-type.jsx';
+import Field from './lib/field.jsx';
+import Form from './lib/form.jsx';
+import ObjectComponent from './lib/object.jsx';
 import {
+  Attributes,
   registerType,
   getFieldTypeName,
   getFieldType,
   getFieldComponent,
-  Attributes,
-} from './types.jsx';
+} from './lib/types.jsx';
+import Utility from './lib/utility.js';
 
 SimpleSchema.extendOptions({
   mrf: Match.Optional(Object),
@@ -23,10 +23,10 @@ export default MRF = {
   FieldType,
   Field,
   Form,
+  Attributes,
   registerType,
   getFieldTypeName,
   getFieldType,
   getFieldComponent,
-  Attributes,
   Utility,
 };
