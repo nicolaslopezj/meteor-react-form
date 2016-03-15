@@ -52,11 +52,13 @@ export default class FieldType extends React.Component {
   constructor(props) {
     super(props);
     this.mrf = props.mrf;
+    this.passProps = props.passProps;
     this.registerComponent();
   }
 
   componentWillReceiveProps(nextProps) {
     this.mrf = nextProps.mrf;
+    this.passProps = nextProps.passProps;
   }
 
   registerComponent() {

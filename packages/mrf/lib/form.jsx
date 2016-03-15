@@ -6,7 +6,11 @@ import Utility from './utility.js';
 
 const propTypes = {
   /**
-   * The document that has the original values for the form.
+   * The object that has the values of the form.
+   */
+  state: React.PropTypes.object,
+  /**
+   * Alias of state
    */
   doc: React.PropTypes.object,
 
@@ -115,8 +119,9 @@ export default class Form extends React.Component {
 
   constructor(props) {
     super(props);
+    const state = this.props.state || this.props.doc || {};
     this.state = {
-      doc: _.clone(this.props.doc) || {},
+      doc: _.clone(state),
       changes: {},
       validationContext: this.getSchema() ? this.getSchema().newContext() : null,
       errorMessages: {},
@@ -128,8 +133,10 @@ export default class Form extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.replaceOnChange || this.props.formId !== nextProps.formId) {
-      if (!_.isEqual(nextProps.doc, this.state.doc)) {
-        this.setState({ doc: _.clone(nextProps.doc) || {}, changes: {} });
+      const state = this.props.state || this.props.doc || {};
+      const nextState = nextProps.state || nextProps.doc || {};
+      if (!_.isEqual(state, nextState)) {
+        this.setState({ doc: _.clone(nextState), changes: {} });
       }
     }
   }

@@ -7,7 +7,6 @@ var {
 
 class TextareaComponent extends MRF.FieldType {
   render() {
-    console.log(this.mrf, 'the mrf');
     return (
       <TextField
         ref='input'

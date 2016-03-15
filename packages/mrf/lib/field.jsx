@@ -2,7 +2,8 @@ import { React } from 'meteor/npmdeps';
 import {
   getFieldType,
   getFieldComponent,
-  getFieldOptionsError
+  getFieldOptionsError,
+  getFieldTypeName,
 } from './types.jsx';
 
 const propTypes = {
@@ -110,20 +111,23 @@ export default class Field extends React.Component {
   }
 
   getChildProps() {
-    var options = {};
-    var type = null;
-    if (this.props.type) {
-      type = getFieldType(this.props.type);
-      options = _.omit(this.props, _.keys(propTypes));
-      const error = getFieldOptionsError({ type, options });
-      if (error) {
-        throw new Error(`MRF options of field "${this.props.fieldName}" are not allowed for "${type.name}". ${error.message}`);
-      }
-    } else {
-      options = (this.getFieldSchema() && this.getFieldSchema().mrf) || {};
+    var typeName = this.props.type;
+    if (!typeName) {
+      typeName = getFieldTypeName({ fieldName: this.props.fieldName, fieldSchema: this.getFieldSchema(), schema: this.getSchema() });
     }
-    mrf = _.extend(type.defaultOptions || {}, options);
-    console.log(mrf, 'mrf');
+    const type = getFieldType(typeName);
+    const propOptions = _.omit(this.props, _.keys(propTypes));
+    const schemaOptions = (this.getFieldSchema() && this.getFieldSchema().mrf) || {};
+    const totalOptions = _.extend(schemaOptions, propOptions);
+    const allowedKeys = _.keys(type.optionsDefinition || {});
+    const onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
+    const error = getFieldOptionsError({ type, options: onlyAllowedOptions });
+    if (error) {
+      throw new Error(`Options for field "${this.props.fieldName}" are not allowed for field type "${type.name}": ${error.message}`);
+    }
+    const notDefinedOptions = _.omit(totalOptions, allowedKeys);
+    mrf = _.extend(type.defaultOptions || {}, onlyAllowedOptions);
+
     return {
       value: this.props.value,
       label: this.props.showLabel ? this.getLabel() : null,
@@ -135,6 +139,7 @@ export default class Field extends React.Component {
       schema: this.getSchema(),
       form: this.props.form,
       disabled: this.props.disabled,
+      passProps: notDefinedOptions,
       mrf,
     };
   }
