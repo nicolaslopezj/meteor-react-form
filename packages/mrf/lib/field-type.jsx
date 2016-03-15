@@ -51,9 +51,12 @@ export default class FieldType extends React.Component {
 
   constructor(props) {
     super(props);
-    this.mrf = (this.props.fieldSchema && this.props.fieldSchema.mrf) || {};
-    this.passProps = this.mrf.passProps || {};
+    this.mrf = props.mrf;
     this.registerComponent();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.mrf = nextProps.mrf;
   }
 
   registerComponent() {

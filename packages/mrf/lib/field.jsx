@@ -1,7 +1,8 @@
 import { React } from 'meteor/npmdeps';
 import {
   getFieldType,
-  getFieldComponent
+  getFieldComponent,
+  getFieldOptionsError
 } from './types.jsx';
 
 const propTypes = {
@@ -9,6 +10,11 @@ const propTypes = {
    * The value of the field.
    */
   value: React.PropTypes.any,
+
+  /**
+   * The label of the field.
+   */
+  label: React.PropTypes.string,
 
   /**
    * The simple schema
@@ -36,19 +42,29 @@ const propTypes = {
   showLabel: React.PropTypes.bool,
 
   /**
-   * Use hint instead of label
+   * Use hint instead of label.
    */
   useHint: React.PropTypes.bool,
 
   /**
-   * The field should be read only mode
+   * The field should be read only mode.
    */
   disabled: React.PropTypes.bool,
 
   /**
-   * The type of the input
+   * The type of the input.
    */
   type: React.PropTypes.string,
+
+  /**
+   * The parent form element (automatically set).
+   */
+  form: React.PropTypes.any,
+
+  /**
+   * The error message for the form (automatically set).
+   */
+  errorMessages: React.PropTypes.object,
 };
 
 const defaultProps = {
@@ -94,6 +110,20 @@ export default class Field extends React.Component {
   }
 
   getChildProps() {
+    var options = {};
+    var type = null;
+    if (this.props.type) {
+      type = getFieldType(this.props.type);
+      options = _.omit(this.props, _.keys(propTypes));
+      const error = getFieldOptionsError({ type, options });
+      if (error) {
+        throw new Error(`MRF options of field "${this.props.fieldName}" are not allowed for "${type.name}". ${error.message}`);
+      }
+    } else {
+      options = (this.getFieldSchema() && this.getFieldSchema().mrf) || {};
+    }
+    mrf = _.extend(type.defaultOptions || {}, options);
+    console.log(mrf, 'mrf');
     return {
       value: this.props.value,
       label: this.props.showLabel ? this.getLabel() : null,
@@ -105,6 +135,7 @@ export default class Field extends React.Component {
       schema: this.getSchema(),
       form: this.props.form,
       disabled: this.props.disabled,
+      mrf,
     };
   }
 

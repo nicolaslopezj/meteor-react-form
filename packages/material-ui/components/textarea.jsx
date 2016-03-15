@@ -7,12 +7,13 @@ var {
 
 class TextareaComponent extends MRF.FieldType {
   render() {
+    console.log(this.mrf, 'the mrf');
     return (
       <TextField
         ref='input'
         fullWidth={true}
         multiLine={true}
-        rows={2}
+        rows={this.mrf.rows}
         value={this.props.value}
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
@@ -29,6 +30,13 @@ MRF.registerType({
   component: TextareaComponent,
   allowedTypes: [String],
   description: 'Textarea',
-  optionsDefinition: {},
-  optionsDescription: {},
+  optionsDefinition: {
+    rows: Match.Optional(Number),
+  },
+  optionsDescription: {
+    rows: 'The number of rows',
+  },
+  defaultOptions: {
+    rows: 2,
+  },
 });

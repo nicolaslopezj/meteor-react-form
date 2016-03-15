@@ -2,8 +2,8 @@ import { React } from 'meteor/npmdeps';
 
 export var Attributes = {};
 
-export const registerType = function({ type, component, description, optionsDefinition, optionsDescription, allowedTypes }) {
-  Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes };
+export const registerType = function({ type, component, description, optionsDefinition, optionsDescription, defaultOptions, allowedTypes }) {
+  Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes, defaultOptions };
 };
 
 export const getFieldType = function(typeName) {
@@ -71,23 +71,31 @@ export const getFieldComponent = function({ fieldName, schema }) {
       contains = true;
     }
 
+    var options = fieldSchema.mrf || {};
+    const error = getFieldOptionsError({ type, options });
+    if (error) {
+      throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${error.message}`);
+    }
+
     if (!contains) {
       throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`);
     }
   }
 
+  return type.component;
+};
+
+export const getFieldOptionsError = function({ type, options }) {
   if (type.optionsDefinition) {
     var optionsDefinition = _.clone(type.optionsDefinition);
     optionsDefinition.type = Match.Optional(String);
     optionsDefinition.passProps = Match.Optional(Object);
     optionsDefinition.omit = Match.Optional(Boolean);
-    var options = fieldSchema.mrf || {};
     try {
       check(options, optionsDefinition);
+      return null;
     } catch (e) {
-      throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${e.message}`);
+      return e;
     }
   }
-
-  return type.component;
 };
