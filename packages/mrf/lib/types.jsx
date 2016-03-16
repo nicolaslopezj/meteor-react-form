@@ -72,11 +72,12 @@ export const getFieldComponent = function({ fieldName, schema }) {
     }
 
     var options = fieldSchema.mrf || {};
+    /*
     const error = getFieldOptionsError({ type, options });
     if (error) {
       throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${error.message}`);
     }
-
+    */
     if (!contains) {
       throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`);
     }
