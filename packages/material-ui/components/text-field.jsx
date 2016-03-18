@@ -6,19 +6,37 @@ var {
 } = MUI;
 
 class TextFieldComponent extends MRF.FieldType {
+
+  constructor(props) {
+    super(props);
+    this.state = { value: props.value };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.value });
+  }
+
+  onKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.props.onChange(this.state.value);
+    }
+  }
+
   render() {
     var type = this.mrf.type || this.type;
     return (
       <TextField
         ref='input'
         fullWidth={true}
-        value={this.props.value}
+        value={this.state.value}
         type={type}
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
         disabled={this.props.disabled}
-        onChange={(event) => this.props.onChange(event.target.value)}
+        onChange={(event) => this.setState({ value: event.target.value })}
+        onKeyDown={this.onKeyDown.bind(this)}
+        onBlur={() => this.props.onChange(this.state.value)}
         {...this.passProps} />
     );
   }

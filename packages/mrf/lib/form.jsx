@@ -98,6 +98,11 @@ const propTypes = {
    * Commit only changes
    */
   commitOnlyChanges: React.PropTypes.bool,
+
+  /**
+   * Minimum wait time between auto saves
+   */
+  autoSaveWaitTime: React.PropTypes.number,
 };
 
 const defaultProps = {
@@ -113,6 +118,7 @@ const defaultProps = {
   objectComponent: ObjectComponent,
   logErrors: false,
   commitOnlyChanges: true,
+  autoSaveWaitTime: 500,
 };
 
 export default class Form extends React.Component {
@@ -127,8 +133,7 @@ export default class Form extends React.Component {
       errorMessages: {},
     };
     this.fields = [];
-
-    this.autoSave = _.throttle(this.submit.bind(this), 500, { leading: false });
+    this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime);
   }
 
   componentWillReceiveProps(nextProps) {
