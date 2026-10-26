@@ -43,7 +43,7 @@ Options:
 
 - ```multi```: ```Boolean``` Optional. Allow to select multiple items
 - ```methodName```: . Meteor method that recieves the search string and returns an array of items with ```label``` and ```value```.
-- ```labelMethodName```: . Meteor method that recieves the value and must return the label. If ```multi``` is set to true, it will recieve an array and it must return an with the labels in the same order.
+- ```labelMethodName```: . Meteor method that recieves the value and must return the label. If ```multi``` is set to true, it will receive an array and it must return an with the labels in the same order.
 - ```connection```: ```Any``` Optional. A Meteor connection.
 - ```throttleTime```: ```Number``` Optional. Minimum time between 2 calls to ```methodName```. Defaults to 200.
 
